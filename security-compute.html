@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS SAP-C02 — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e13;
+    --bg2: #111722;
+    --bg3: #1a2233;
+    --border: #1e2d44;
+    --border2: #2a3f5f;
+    --text: #c8d8ec;
+    --text2: #7a9bbf;
+    --text3: #4a6a8a;
+    --accent: #00c8ff;
+    --accent2: #0077bb;
+    --green: #00e5a0;
+    --amber: #ffb830;
+    --red: #ff4d6a;
+    --purple: #9d7fff;
+    --teal: #00d4c8;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Scanline texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,200,255,0.012) 2px,
+      rgba(0,200,255,0.012) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* Header */
+  header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--accent2);
+    padding: 3px 10px;
+    border-radius: 2px;
+    background: rgba(0,200,255,0.05);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+
+  header h1 {
+    font-family: var(--font-mono);
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  header h1 span { color: var(--accent); }
+
+  .header-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-align: right;
+    line-height: 2;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    padding: 20px 24px;
+    margin-bottom: 48px;
+    border-radius: 2px;
+  }
+
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 4px 24px;
+  }
+
+  .toc a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text2);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: var(--accent); }
+  .toc a::before { content: '→'; color: var(--text3); font-size: 10px; }
+
+  /* Section */
+  .section {
+    margin-bottom: 56px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(1)  { animation-delay: 0.05s; }
+  .section:nth-child(2)  { animation-delay: 0.10s; }
+  .section:nth-child(3)  { animation-delay: 0.15s; }
+  .section:nth-child(4)  { animation-delay: 0.20s; }
+  .section:nth-child(5)  { animation-delay: 0.25s; }
+  .section:nth-child(6)  { animation-delay: 0.30s; }
+  .section:nth-child(7)  { animation-delay: 0.35s; }
+  .section:nth-child(8)  { animation-delay: 0.40s; }
+  .section:nth-child(9)  { animation-delay: 0.45s; }
+  .section:nth-child(10) { animation-delay: 0.50s; }
+  .section:nth-child(11) { animation-delay: 0.55s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 28px;
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .tag-security { color: var(--red); border-color: var(--red); background: rgba(255,77,106,0.08); }
+  .tag-network  { color: var(--teal); border-color: var(--teal); background: rgba(0,212,200,0.08); }
+  .tag-compute  { color: var(--green); border-color: var(--green); background: rgba(0,229,160,0.08); }
+  .tag-hpc      { color: var(--purple); border-color: var(--purple); background: rgba(157,127,255,0.08); }
+  .tag-scaling  { color: var(--amber); border-color: var(--amber); background: rgba(255,184,48,0.08); }
+
+  /* Prose */
+  .prose { color: var(--text); line-height: 1.75; }
+  .prose p { margin-bottom: 14px; }
+  .prose strong { color: #fff; font-weight: 600; }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    padding: 1px 6px;
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  /* Callout / trap box */
+  .callout {
+    border-left: 3px solid var(--amber);
+    background: rgba(255,184,48,0.05);
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .callout.danger { border-color: var(--red); background: rgba(255,77,106,0.05); }
+  .callout.info   { border-color: var(--accent); background: rgba(0,200,255,0.05); }
+  .callout.success { border-color: var(--green); background: rgba(0,229,160,0.05); }
+
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .callout.danger .callout-label  { color: var(--red); }
+  .callout.info .callout-label    { color: var(--accent); }
+  .callout.success .callout-label { color: var(--green); }
+
+  .callout p { margin: 0; font-size: 13px; }
+
+  /* Comparison grid */
+  .compare-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .compare-grid.col2 { grid-template-columns: repeat(2, 1fr); }
+  .compare-grid.col3 { grid-template-columns: repeat(3, 1fr); }
+  .compare-grid.col4 { grid-template-columns: repeat(4, 1fr); }
+
+  @media (max-width: 720px) {
+    .compare-grid.col2,
+    .compare-grid.col3,
+    .compare-grid.col4 { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border2); }
+
+  .card-title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title.blue   { color: var(--accent); }
+  .card-title.green  { color: var(--green); }
+  .card-title.amber  { color: var(--amber); }
+  .card-title.red    { color: var(--red); }
+  .card-title.purple { color: var(--purple); }
+  .card-title.teal   { color: var(--teal); }
+
+  .kv-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 7px;
+    font-size: 12px;
+    align-items: baseline;
+  }
+
+  .kv-key {
+    font-family: var(--font-mono);
+    color: var(--text3);
+    min-width: 80px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .kv-val { color: var(--text); flex: 1; }
+
+  /* Table */
+  .tbl-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    background: var(--bg3);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  td strong { color: #fff; font-weight: 600; }
+  td code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--bg3);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 16px 0;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .flow-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .flow-box {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    padding: 10px 14px;
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text);
+    white-space: nowrap;
+    text-align: center;
+    min-width: 100px;
+  }
+
+  .flow-box.wait {
+    border-color: var(--amber);
+    color: var(--amber);
+    background: rgba(255,184,48,0.06);
+  }
+
+  .flow-box.active {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(0,229,160,0.06);
+  }
+
+  .flow-box.term {
+    border-color: var(--red);
+    color: var(--red);
+    background: rgba(255,77,106,0.06);
+  }
+
+  .flow-box sub {
+    display: block;
+    font-size: 9px;
+    color: var(--text3);
+    margin-top: 3px;
+  }
+
+  .flow-arrow {
+    font-family: var(--font-mono);
+    color: var(--text3);
+    padding: 0 6px;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Pill list */
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+  }
+
+  .pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    background: var(--bg3);
+  }
+
+  .pill.accent  { border-color: var(--accent2); color: var(--accent); background: rgba(0,200,255,0.06); }
+  .pill.green   { border-color: rgba(0,229,160,0.4); color: var(--green); background: rgba(0,229,160,0.06); }
+  .pill.amber   { border-color: rgba(255,184,48,0.4); color: var(--amber); background: rgba(255,184,48,0.06); }
+  .pill.red     { border-color: rgba(255,77,106,0.4); color: var(--red); background: rgba(255,77,106,0.06); }
+  .pill.purple  { border-color: rgba(157,127,255,0.4); color: var(--purple); background: rgba(157,127,255,0.06); }
+
+  /* Rule divider */
+  .rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* Blink cursor for header */
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.1em;
+    background: var(--accent);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 1s step-start infinite;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <div>
+      <div class="header-badge">AWS Solutions Architect Professional</div>
+      <h1>SAP-C02<span> Study Guide</span><span class="cursor"></span></h1>
+    </div>
+    <div class="header-meta">
+      11 topics<br>
+      Deep-dive reference<br>
+      Exam-critical traps flagged
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">// Contents</div>
+    <div class="toc-grid">
+      <a href="#acm">ACM</a>
+      <a href="#kms">KMS vs CloudHSM</a>
+      <a href="#shield">Shield &amp; WAF</a>
+      <a href="#ena">ENA vs EFA</a>
+      <a href="#hpc">HPC on AWS</a>
+      <a href="#lambda">Lambda — async / sync / concurrency</a>
+      <a href="#lb">Load Balancers &amp; Layers</a>
+      <a href="#ec2">EC2 — Dedicated Hosts</a>
+      <a href="#ecs">ECS Networking Modes</a>
+      <a href="#ga">Global Accelerator + ALB</a>
+      <a href="#asg">Auto Scaling Lifecycle Hooks</a>
+    </div>
+  </div>
+
+  <!-- ───────── ACM ───────── -->
+  <div class="section" id="acm">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">ACM — AWS Certificate Manager</span>
+      <span class="section-tag tag-security">Security</span>
+    </div>
+    <div class="prose">
+      <p>ACM provisions, manages, and <strong>auto-renews</strong> TLS/SSL certificates. It abstracts key management entirely for managed certs — you cannot export private keys from them.</p>
+    </div>
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title teal">Cert placement rules</div>
+        <div class="kv-row">
+          <span class="kv-key">CloudFront</span>
+          <span class="kv-val">Cert <strong>must be in us-east-1</strong> regardless of origin region</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">ALB</span>
+          <span class="kv-val">Same region as the load balancer</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">API Gateway</span>
+          <span class="kv-val">Same region as the API (regional endpoint)</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">EC2 direct</span>
+          <span class="kv-val">Not supported — must import cert instead</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title blue">Key behaviors</div>
+        <div class="kv-row">
+          <span class="kv-key">Renewal</span>
+          <span class="kv-val">Automatic for managed certs, 60 days before expiry</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">Private key</span>
+          <span class="kv-val">Never exportable for ACM-managed certs</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">Import</span>
+          <span class="kv-val">Allowed — you manage renewal for imported certs</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">Integrations</span>
+          <span class="kv-val">CloudFront, ALB, NLB, API GW, Elastic Beanstalk</span>
+        </div>
+      </div>
+    </div>
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p>CloudFront cert in us-east-1 is the #1 ACM trap. Even if your origin is in ap-southeast-1, the cert for CloudFront must be provisioned in us-east-1.</p>
+    </div>
+  </div>
+
+  <!-- ───────── KMS / CloudHSM ───────── -->
+  <div class="section" id="kms">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">KMS vs CloudHSM + Cross-Region</span>
+      <span class="section-tag tag-security">Security</span>
+    </div>
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">AWS KMS</div>
+        <div class="kv-row"><span class="kv-key">Hardware</span><span class="kv-val">Shared, AWS-managed multi-tenant HSM</span></div>
+        <div class="kv-row"><span class="kv-key">Key control</span><span class="kv-val">AWS controls HSM; you control key policies</span></div>
+        <div class="kv-row"><span class="kv-key">FIPS</span><span class="kv-val">140-2 <strong>Level 2</strong></span></div>
+        <div class="kv-row"><span class="kv-key">Key types</span><span class="kv-val">AWS-managed, customer-managed, imported</span></div>
+        <div class="kv-row"><span class="kv-key">Rotation</span><span class="kv-val">Automatic annual (symmetric keys only)</span></div>
+        <div class="kv-row"><span class="kv-key">API</span><span class="kv-val">AWS KMS API — no direct HSM access</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">Free tier + per-API-call pricing</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">CloudHSM</div>
+        <div class="kv-row"><span class="kv-key">Hardware</span><span class="kv-val">Dedicated HSM inside your VPC</span></div>
+        <div class="kv-row"><span class="kv-key">Key control</span><span class="kv-val">You own the key material — AWS has zero access</span></div>
+        <div class="kv-row"><span class="kv-key">FIPS</span><span class="kv-val">140-2 <strong>Level 3</strong></span></div>
+        <div class="kv-row"><span class="kv-key">Key types</span><span class="kv-val">Symmetric + asymmetric; PKCS#11 / JCE / CNG</span></div>
+        <div class="kv-row"><span class="kv-key">Rotation</span><span class="kv-val">Manual — full control over lifecycle</span></div>
+        <div class="kv-row"><span class="kv-key">API</span><span class="kv-val">Direct HSM via client SDK (PKCS#11 etc.)</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">~$1.60/hr per HSM; cluster for HA = 2+ HSMs</span></div>
+      </div>
+    </div>
+    <div class="callout info">
+      <span class="callout-label">When to choose CloudHSM</span>
+      <p>Regulatory requirement for Level 3, BYOK where AWS must not see key material, Oracle TDE, SSL offloading on EC2, custom crypto via PKCS#11, or compliance requiring dedicated hardware.</p>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <div class="card-title amber">KMS Cross-Region — Critical Rules</div>
+      <div class="prose" style="margin-top: 8px;">
+        <p><strong>KMS keys do NOT replicate automatically across regions.</strong> For cross-region scenarios (S3 replication with SSE-KMS, encrypted AMI copy, RDS snapshot copy), you must create a <strong>separate CMK in each destination region</strong> and explicitly specify it.</p>
+        <p><strong>Multi-Region Keys (MRK)</strong> are the exception — they share the same underlying key material and have a key ID prefixed with <code>mrk-</code>. MRKs enable decryption in the destination region without re-encryption, critical for active-active architectures and disaster recovery.</p>
+      </div>
+    </div>
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p>"I copied an encrypted AMI to another region — why can't I launch it?" → Because the source KMS key doesn't exist in the destination region. You need a CMK in the destination and must specify it during the copy.</p>
+    </div>
+  </div>
+
+  <!-- ───────── SHIELD / WAF ───────── -->
+  <div class="section" id="shield">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Shield &amp; WAF — Layers 3/4 vs 7</span>
+      <span class="section-tag tag-security">Security</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>OSI Layer</th>
+            <th>What it blocks</th>
+            <th>Attaches to</th>
+            <th>Cost</th>
+            <th>Extras</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Shield Standard</strong></td>
+            <td>L3 / L4</td>
+            <td>Volumetric floods, SYN floods, UDP reflection</td>
+            <td>All AWS resources (automatic)</td>
+            <td>Free</td>
+            <td>Always-on, no configuration</td>
+          </tr>
+          <tr>
+            <td><strong>Shield Advanced</strong></td>
+            <td>L3 / L4 / L7</td>
+            <td>All of Standard + sophisticated app-layer attacks</td>
+            <td>EC2, ELB, CloudFront, Route 53, Global Accelerator</td>
+            <td>~$3,000/mo</td>
+            <td>DRT 24/7, cost protect, advanced metrics, auto WAF rules</td>
+          </tr>
+          <tr>
+            <td><strong>AWS WAF</strong></td>
+            <td>L7 only</td>
+            <td>SQLi, XSS, bad bots, rate-based, geo-block, custom rules</td>
+            <td>CloudFront, ALB, API GW, AppSync, Cognito</td>
+            <td>Per-WebACL + per-rule</td>
+            <td>Web ACL → Rule Groups → Rules; AWS Managed Rules</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="compare-grid col2" style="margin-top: 16px;">
+      <div class="callout info">
+        <span class="callout-label">WAF Rule hierarchy</span>
+        <p>Web ACL → Rule Groups (managed or custom) → Rules (IP set, geo match, rate-based, regex, SQL injection, XSS, managed rule group). Priority order matters — lower number = evaluated first.</p>
+      </div>
+      <div class="callout danger">
+        <span class="callout-label">⚡ Exam Trap</span>
+        <p>WAF does NOT attach to NLB or EC2 directly. NLB is Layer 4 only — if you need L7 inspection in front of NLB, you must put a CloudFront distribution or ALB in front of it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── ENA / EFA ───────── -->
+  <div class="section" id="ena">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">ENA vs EFA</span>
+      <span class="section-tag tag-network">Network</span>
+    </div>
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">ENA — Elastic Network Adapter</div>
+        <div class="kv-row"><span class="kv-key">Purpose</span><span class="kv-val">High-throughput, low-latency standard networking</span></div>
+        <div class="kv-row"><span class="kv-key">Protocol</span><span class="kv-val">TCP/UDP over standard VPC networking</span></div>
+        <div class="kv-row"><span class="kv-key">Bandwidth</span><span class="kv-val">Up to 100 Gbps (instance-dependent)</span></div>
+        <div class="kv-row"><span class="kv-key">OS bypass</span><span class="kv-val">No — uses standard kernel network stack</span></div>
+        <div class="kv-row"><span class="kv-key">OS support</span><span class="kv-val">Linux and Windows</span></div>
+        <div class="kv-row"><span class="kv-key">Use case</span><span class="kv-val">Any high-bandwidth EC2 workload</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title purple">EFA — Elastic Fabric Adapter</div>
+        <div class="kv-row"><span class="kv-key">Purpose</span><span class="kv-val">HPC / MPI — bypasses OS kernel for ultra-low latency</span></div>
+        <div class="kv-row"><span class="kv-key">Protocol</span><span class="kv-val">SRD (Scalable Reliable Datagram) + libfabric</span></div>
+        <div class="kv-row"><span class="kv-key">Bandwidth</span><span class="kv-val">Same as ENA — benefit is latency, not raw throughput</span></div>
+        <div class="kv-row"><span class="kv-key">OS bypass</span><span class="kv-val"><strong>Yes</strong> — hardware OS-bypass path via SRD</span></div>
+        <div class="kv-row"><span class="kv-key">OS support</span><span class="kv-val"><strong>Linux only</strong> for OS-bypass; Windows = standard ENA</span></div>
+        <div class="kv-row"><span class="kv-key">Placement</span><span class="kv-val">Cluster Placement Group required for OS-bypass</span></div>
+      </div>
+    </div>
+    <div class="callout amber">
+      <span class="callout-label">Key insight</span>
+      <p>EFA is a superset of ENA — it includes all standard ENA functionality. On Windows, EFA behaves exactly like ENA. The OS-bypass benefit only activates on Linux with libfabric-aware applications (MPI, ML collective ops).</p>
+    </div>
+  </div>
+
+  <!-- ───────── HPC ───────── -->
+  <div class="section" id="hpc">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">HPC on AWS</span>
+      <span class="section-tag tag-hpc">HPC</span>
+    </div>
+    <div class="compare-grid col3" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title purple">Networking</div>
+        <div class="kv-row"><span class="kv-key">EFA</span><span class="kv-val">OS-bypass, MPI transport, libfabric</span></div>
+        <div class="kv-row"><span class="kv-key">Placement</span><span class="kv-val">Cluster Placement Group (same AZ rack)</span></div>
+        <div class="kv-row"><span class="kv-key">Instances</span><span class="kv-val">hpc6a, hpc6id, p4d, p4de, trn1</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">Storage</div>
+        <div class="kv-row"><span class="kv-key">FSx Lustre</span><span class="kv-val">Sub-ms latency parallel FS, auto-import S3</span></div>
+        <div class="kv-row"><span class="kv-key">Instance SSD</span><span class="kv-val">NVMe local — ephemeral scratch storage</span></div>
+        <div class="kv-row"><span class="kv-key">EFS</span><span class="kv-val">Shared storage across nodes (higher latency)</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title amber">Orchestration</div>
+        <div class="kv-row"><span class="kv-key">ParallelCluster</span><span class="kv-val">AWS-managed HPC cluster automation</span></div>
+        <div class="kv-row"><span class="kv-key">Scheduler</span><span class="kv-val">Slurm or AWS Batch</span></div>
+        <div class="kv-row"><span class="kv-key">Spot</span><span class="kv-val">Spot Fleet / managed node groups for cost</span></div>
+      </div>
+    </div>
+    <div class="callout info">
+      <span class="callout-label">Architecture pattern</span>
+      <p>Head node (job scheduler) → Cluster Placement Group → Compute nodes with EFA → FSx for Lustre (scratch) ↔ S3 (persistent). Use AWS ParallelCluster to automate the entire stack. FSx for Lustre can be linked to S3 so data is lazily loaded on first access.</p>
+    </div>
+  </div>
+
+  <!-- ───────── LAMBDA ───────── -->
+  <div class="section" id="lambda">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">Lambda — Async vs Sync + Concurrency</span>
+      <span class="section-tag tag-compute">Compute</span>
+    </div>
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Synchronous Invocation</div>
+        <div class="kv-row"><span class="kv-key">Behavior</span><span class="kv-val">Caller blocks and waits for response inline</span></div>
+        <div class="kv-row"><span class="kv-key">Sources</span><span class="kv-val">API Gateway, ALB, Cognito, SDK/CLI, Step Functions</span></div>
+        <div class="kv-row"><span class="kv-key">Errors</span><span class="kv-val">Returned directly to caller — retry is caller's responsibility</span></div>
+        <div class="kv-row"><span class="kv-key">Throttle</span><span class="kv-val">429 TooManyRequests returned to caller</span></div>
+        <div class="kv-row"><span class="kv-key">DLQ</span><span class="kv-val">Not applicable — caller handles errors</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">Asynchronous Invocation</div>
+        <div class="kv-row"><span class="kv-key">Behavior</span><span class="kv-val">Lambda queues event, returns 202 immediately</span></div>
+        <div class="kv-row"><span class="kv-key">Sources</span><span class="kv-val">S3, SNS, EventBridge, SES, CodeCommit, CloudWatch</span></div>
+        <div class="kv-row"><span class="kv-key">Errors</span><span class="kv-val">Automatic retry ×2 (with back-off), then → destination</span></div>
+        <div class="kv-row"><span class="kv-key">Throttle</span><span class="kv-val">Event queued up to 6 hours; then discarded or DLQ</span></div>
+        <div class="kv-row"><span class="kv-key">Destinations</span><span class="kv-val">On-success / on-failure → SQS, SNS, Lambda, EventBridge</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Concurrency Model</div>
+      <div class="compare-grid col3" style="margin-top: 12px; gap: 8px;">
+        <div style="background: var(--bg); border: 1px solid var(--border2); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--amber); margin-bottom: 6px;">Reserved</div>
+          <p style="font-size: 12px; color: var(--text2);">Guaranteed pool for a specific function. Also acts as a hard cap — function cannot exceed this, protecting other functions in the account.</p>
+        </div>
+        <div style="background: var(--bg); border: 1px solid var(--border2); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--green); margin-bottom: 6px;">Provisioned</div>
+          <p style="font-size: 12px; color: var(--text2);">Pre-initialized execution environments. Eliminates cold starts entirely. Costs money even at zero invocations. Use for latency-sensitive functions.</p>
+        </div>
+        <div style="background: var(--bg); border: 1px solid var(--border2); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text2); margin-bottom: 6px;">Unreserved</div>
+          <p style="font-size: 12px; color: var(--text2);">Shared account-level pool. Default for functions with no reserved concurrency. One function can consume the entire pool.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Limit / Behavior</th><th>Value</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Default account concurrency</td><td><strong>1,000</strong></td><td>Per region; can request increase</td></tr>
+          <tr><td>Burst limit</td><td><strong>500–3,000</strong></td><td>Region-dependent initial burst, then +500/min</td></tr>
+          <tr><td>Kinesis event source</td><td><strong>1 concurrent per shard</strong></td><td>Adding shards = more concurrency</td></tr>
+          <tr><td>SQS event source</td><td><strong>Up to 1,000</strong></td><td>Scales to 60 concurrent, adds 60/min per queue</td></tr>
+          <tr><td>Async retry</td><td><strong>2 retries</strong></td><td>After retry exhaustion → DLQ or on-failure destination</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ───────── LB ───────── -->
+  <div class="section" id="lb">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title">Load Balancers &amp; Layers</span>
+      <span class="section-tag tag-network">Network</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th></th><th>ALB</th><th>NLB</th><th>GWLB</th><th>CLB (legacy)</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>OSI Layer</strong></td>
+            <td><code>L7</code></td>
+            <td><code>L4</code></td>
+            <td><code>L3</code></td>
+            <td><code>L4 / L7</code></td>
+          </tr>
+          <tr>
+            <td><strong>Routing</strong></td>
+            <td>URL path, host, headers, query, method, IP, source IP</td>
+            <td>IP + TCP/UDP port</td>
+            <td>Transparent bump-in-the-wire via GENEVE</td>
+            <td>Basic round-robin / sticky</td>
+          </tr>
+          <tr>
+            <td><strong>Target types</strong></td>
+            <td>Instance, IP, Lambda</td>
+            <td>Instance, IP, ALB</td>
+            <td>Instance, IP (security appliances)</td>
+            <td>Instance only</td>
+          </tr>
+          <tr>
+            <td><strong>Static/Elastic IP</strong></td>
+            <td>No (DNS-based only)</td>
+            <td><strong>Yes — per AZ</strong></td>
+            <td>No</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td><strong>Client IP preservation</strong></td>
+            <td>Via X-Forwarded-For header</td>
+            <td><strong>Preserved natively</strong></td>
+            <td>N/A</td>
+            <td>Via X-Forwarded-For</td>
+          </tr>
+          <tr>
+            <td><strong>WebSockets</strong></td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>N/A</td>
+            <td>No</td>
+          </tr>
+          <tr>
+            <td><strong>Use case</strong></td>
+            <td>HTTP/S microservices, auth offload, URL routing</td>
+            <td>Ultra-low latency, gaming, IoT, VoIP, whitelisted IPs</td>
+            <td>Security appliance insertion (IDS/IPS/FW)</td>
+            <td>Legacy workloads only</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Traps</span>
+      <p><strong>Client needs to whitelist fixed IPs</strong> → NLB (Elastic IP per AZ). ALB only has DNS — IP can change. | <strong>GWLB uses GENEVE protocol on port 6081</strong> to encapsulate traffic to/from security appliances — it's transparent to source and destination. | WAF cannot attach to NLB directly.</p>
+    </div>
+  </div>
+
+  <!-- ───────── EC2 ───────── -->
+  <div class="section" id="ec2">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <span class="section-title">EC2 — Dedicated Hosts &amp; Host Affinity</span>
+      <span class="section-tag tag-compute">Compute</span>
+    </div>
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Dedicated Instance</div>
+        <div class="prose" style="font-size: 13px;">
+          <p>Runs on hardware not shared with other AWS accounts. AWS may move the instance to a different physical host after stop/start. You have no visibility into host-level details (sockets, cores). Per-instance billing.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title amber">Dedicated Host</div>
+        <div class="prose" style="font-size: 13px;">
+          <p>You control a <strong>specific physical server</strong>. Visibility into socket count, core count, host ID. Can target a specific host for instance launches. Per-host billing. Supports multiple instance sizes from the same family (e.g., all m5 variants).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Host Affinity</div>
+      <div class="compare-grid col2" style="margin-top: 12px; gap: 8px;">
+        <div style="background: var(--bg); border: 1px solid rgba(255,184,48,0.3); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--amber); margin-bottom: 6px;"><code>HOST</code></div>
+          <p style="font-size: 12px; color: var(--text2);">Instance always restarts on the <strong>same physical host</strong> after stop/start. Critical for per-socket/per-core BYOL licenses (SQL Server, Oracle, Windows Server).</p>
+        </div>
+        <div style="background: var(--bg); border: 1px solid var(--border); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text2); margin-bottom: 6px;"><code>DEFAULT</code></div>
+          <p style="font-size: 12px; color: var(--text2);">AWS picks the host after stop/start. The instance may move, which can break license compliance if the license is tied to a specific host ID.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout info">
+      <span class="callout-label">BYOL use case</span>
+      <p>Dedicated Host + Host Affinity=HOST is the required combination for BYOL software (Oracle DB, SQL Server Enterprise, Windows Server with SA) that licenses per physical socket or core. You can provide auditors the specific host ID as proof of isolation.</p>
+    </div>
+  </div>
+
+  <!-- ───────── ECS ───────── -->
+  <div class="section" id="ecs">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <span class="section-title">ECS Networking Modes</span>
+      <span class="section-tag tag-network">Network</span>
+    </div>
+    <div class="compare-grid col2" style="margin: 16px 0; gap: 12px;">
+      <div class="card">
+        <div class="card-title blue">bridge (default EC2)</div>
+        <div class="kv-row"><span class="kv-key">Network</span><span class="kv-val">Docker bridge network on the host</span></div>
+        <div class="kv-row"><span class="kv-key">Ports</span><span class="kv-val">Dynamic host port mapping (ALB dynamic port reg.)</span></div>
+        <div class="kv-row"><span class="kv-key">ENI</span><span class="kv-val">Multiple tasks share the host ENI</span></div>
+        <div class="kv-row"><span class="kv-key">Launch type</span><span class="kv-val">EC2 only</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title green">host</div>
+        <div class="kv-row"><span class="kv-key">Network</span><span class="kv-val">Uses host EC2 network stack directly</span></div>
+        <div class="kv-row"><span class="kv-key">Ports</span><span class="kv-val">No port remapping — container port = host port</span></div>
+        <div class="kv-row"><span class="kv-key">Perf</span><span class="kv-val">Best possible network performance</span></div>
+        <div class="kv-row"><span class="kv-key">Limit</span><span class="kv-val">Only one task per port per host; no multi-instance</span></div>
+      </div>
+      <div class="card" style="border-color: var(--border2);">
+        <div class="card-title purple">awsvpc ★ (recommended)</div>
+        <div class="kv-row"><span class="kv-key">Network</span><span class="kv-val">Each task gets its own Elastic Network Interface</span></div>
+        <div class="kv-row"><span class="kv-key">VPC features</span><span class="kv-val">Full — Security Groups, VPC Flow Logs, NACLs</span></div>
+        <div class="kv-row"><span class="kv-key">Fargate</span><span class="kv-val"><strong>Required</strong> — only mode supported by Fargate</span></div>
+        <div class="kv-row"><span class="kv-key">EC2</span><span class="kv-val">ENI trunking on EC2 to support many tasks per host</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title">none</div>
+        <div class="kv-row"><span class="kv-key">Network</span><span class="kv-val">No external connectivity, loopback only</span></div>
+        <div class="kv-row"><span class="kv-key">Use case</span><span class="kv-val">Custom networking / sidecar-only scenarios</span></div>
+        <div class="kv-row"><span class="kv-key">Security</span><span class="kv-val">Maximum isolation from network</span></div>
+      </div>
+    </div>
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p>awsvpc mode has an ENI limit per EC2 instance. For high-density task deployments on EC2, enable <strong>ENI trunking</strong> (requires compatible instance types like m5.large+). Without it, you'll hit ENI limits quickly on smaller instances.</p>
+    </div>
+  </div>
+
+  <!-- ───────── GLOBAL ACCELERATOR ───────── -->
+  <div class="section" id="ga">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <span class="section-title">Global Accelerator + ALB</span>
+      <span class="section-tag tag-network">Network</span>
+    </div>
+    <div class="card" style="margin-bottom: 16px;">
+      <div class="card-title accent">How Global Accelerator works</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p>Global Accelerator provides <strong>two static Anycast IP addresses</strong> that are globally advertised. User traffic enters the AWS network at the closest AWS edge location, then travels the low-latency AWS backbone to reach your endpoint — instead of traversing the unpredictable public internet.</p>
+        <p>Endpoints can be ALBs, NLBs, EC2 instances, or Elastic IPs in any region. Failover happens in ~30 seconds based on health checks. <strong>Traffic dials</strong> let you shift 0–100% of traffic per endpoint group, enabling canary and blue/green deployments.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th></th><th>Global Accelerator</th><th>CloudFront</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Layer</strong></td><td>L4 (TCP/UDP) — any protocol</td><td>L7 HTTP/S only</td></tr>
+          <tr><td><strong>Caching</strong></td><td>No</td><td>Yes — content at edge</td></tr>
+          <tr><td><strong>IPs</strong></td><td><strong>2 static Anycast IPs</strong></td><td>Dynamic DNS (no fixed IPs)</td></tr>
+          <tr><td><strong>Client IP</strong></td><td>Preserved</td><td>Via X-Forwarded-For</td></tr>
+          <tr><td><strong>Use case</strong></td><td>Gaming, VoIP, IoT, TCP apps needing fixed IPs, multi-region failover</td><td>Static/dynamic web, API acceleration, CDN</td></tr>
+          <tr><td><strong>Endpoint types</strong></td><td>ALB, NLB, EC2, Elastic IP</td><td>S3, ALB, EC2, custom origin</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p>Any question mentioning <strong>fixed IPs for a global application</strong>, <strong>gaming/UDP</strong>, or <strong>multi-region TCP failover</strong> → Global Accelerator, not CloudFront. CloudFront is the answer when the question mentions caching, static assets, or HTTP/S only.</p>
+    </div>
+  </div>
+
+  <!-- ───────── LIFECYCLE HOOKS ───────── -->
+  <div class="section" id="asg">
+    <div class="section-header">
+      <span class="section-num">11</span>
+      <span class="section-title">Auto Scaling Lifecycle Hooks</span>
+      <span class="section-tag tag-scaling">Scaling</span>
+    </div>
+
+    <div class="prose" style="margin-bottom: 16px;">
+      <p>Lifecycle hooks let you pause an instance in a <strong>Wait state</strong> during scale-out (before it enters service) or scale-in (before it gets terminated), so you can run custom actions.</p>
+    </div>
+
+    <div style="margin: 0 0 8px; font-family: var(--font-mono); font-size: 10px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase;">Scale-out path</div>
+    <div class="flow" style="margin-bottom: 20px;">
+      <div class="flow-item">
+        <div class="flow-box">Pending<sub>instance starting</sub></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box wait">Pending:Wait<sub>hook fires here</sub></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box">Pending:Proceed<sub>action = CONTINUE</sub></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box active">InService</div>
+      </div>
+    </div>
+
+    <div style="margin: 0 0 8px; font-family: var(--font-mono); font-size: 10px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase;">Scale-in path</div>
+    <div class="flow" style="margin-bottom: 20px;">
+      <div class="flow-item">
+        <div class="flow-box active">InService</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box wait">Terminating:Wait<sub>hook fires here</sub></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box">Terminating:Proceed<sub>action = CONTINUE</sub></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-box term">Terminated</div>
+      </div>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title amber">During Wait state</div>
+        <div class="kv-row"><span class="kv-key">Timeout</span><span class="kv-val">Default 1 hour, max 48 hours</span></div>
+        <div class="kv-row"><span class="kv-key">Heartbeat</span><span class="kv-val">Send heartbeat to extend timeout window</span></div>
+        <div class="kv-row"><span class="kv-key">Complete</span><span class="kv-val">Call <code>complete-lifecycle-action</code> with CONTINUE or ABANDON</span></div>
+        <div class="kv-row"><span class="kv-key">Default result</span><span class="kv-val">Configurable: CONTINUE or ABANDON on timeout</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">Notification targets</div>
+        <div class="kv-row"><span class="kv-key">SNS</span><span class="kv-val">Trigger Lambda via SNS subscription</span></div>
+        <div class="kv-row"><span class="kv-key">SQS</span><span class="kv-val">Queue the hook event for worker processing</span></div>
+        <div class="kv-row"><span class="kv-key">EventBridge</span><span class="kv-val">Route to Lambda, SSM Automation, Step Functions</span></div>
+        <div class="kv-row"><span class="kv-key">SSM</span><span class="kv-val">Run Automation document directly on the instance</span></div>
+      </div>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="callout info">
+        <span class="callout-label">Scale-out hook uses</span>
+        <p>Bootstrap: pull config from S3/SSM Parameter Store, join domain, warm application caches, register with service mesh, install agents, run compliance checks. Complete with CONTINUE when ready.</p>
+      </div>
+      <div class="callout amber">
+        <span class="callout-label">Scale-in hook uses</span>
+        <p>Graceful drain: flush in-flight requests, push final logs to S3/CloudWatch, deregister from service discovery, take EBS snapshot, run decommission scripts. Complete with CONTINUE to allow termination.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+  <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text3); text-align: center; padding: 8px 0 40px;">
+    // AWS SAP-C02 Study Guide — 11 topics covered // Good luck on the exam
+  </div>
+
+</div>
+</body>
+</html>
