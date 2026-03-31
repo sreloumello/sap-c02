@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS SAP-C02 Practice Exam — Complete Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e13;
+    --bg2: #111722;
+    --bg3: #1a2233;
+    --border: #1e2d44;
+    --border2: #2a3f5f;
+    --text: #c8d8ec;
+    --text2: #7a9bbf;
+    --text3: #4a6a8a;
+    --accent: #00c8ff;
+    --accent2: #0077bb;
+    --green: #00e5a0;
+    --amber: #ffb830;
+    --red: #ff4d6a;
+    --purple: #9d7fff;
+    --teal: #00d4c8;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,200,255,0.012) 2px,
+      rgba(0,200,255,0.012) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--accent2);
+    padding: 3px 10px;
+    border-radius: 2px;
+    background: rgba(0,200,255,0.05);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+
+  header h1 {
+    font-family: var(--font-mono);
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  header h1 span { color: var(--accent); }
+
+  .header-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-align: right;
+    line-height: 2;
+  }
+
+  .toc {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    padding: 20px 24px;
+    margin-bottom: 48px;
+    border-radius: 2px;
+  }
+
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 4px 24px;
+  }
+
+  .toc a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text2);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: var(--accent); }
+  .toc a::before { content: '→'; color: var(--text3); font-size: 10px; }
+
+  .section {
+    margin-bottom: 56px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(1)  { animation-delay: 0.05s; }
+  .section:nth-child(2)  { animation-delay: 0.10s; }
+  .section:nth-child(3)  { animation-delay: 0.15s; }
+  .section:nth-child(4)  { animation-delay: 0.20s; }
+  .section:nth-child(5)  { animation-delay: 0.25s; }
+  .section:nth-child(6)  { animation-delay: 0.30s; }
+  .section:nth-child(7)  { animation-delay: 0.35s; }
+  .section:nth-child(8)  { animation-delay: 0.40s; }
+  .section:nth-child(9)  { animation-delay: 0.45s; }
+  .section:nth-child(10) { animation-delay: 0.50s; }
+  .section:nth-child(11) { animation-delay: 0.55s; }
+  .section:nth-child(12) { animation-delay: 0.60s; }
+  .section:nth-child(13) { animation-delay: 0.65s; }
+  .section:nth-child(14) { animation-delay: 0.70s; }
+  .section:nth-child(15) { animation-delay: 0.75s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 28px;
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .tag-storage { color: var(--purple); border-color: var(--purple); background: rgba(157,127,255,0.08); }
+  .tag-data    { color: var(--green); border-color: var(--green); background: rgba(0,229,160,0.08); }
+  .tag-network { color: var(--teal); border-color: var(--teal); background: rgba(0,212,200,0.08); }
+  .tag-security { color: var(--red); border-color: var(--red); background: rgba(255,77,106,0.08); }
+  .tag-cost    { color: var(--amber); border-color: var(--amber); background: rgba(255,184,48,0.08); }
+  .tag-logging { color: var(--accent); border-color: var(--accent); background: rgba(0,200,255,0.08); }
+  .tag-cdn     { color: var(--green); border-color: var(--green); background: rgba(0,229,160,0.08); }
+  .tag-database { color: var(--purple); border-color: var(--purple); background: rgba(157,127,255,0.08); }
+  .tag-tracing { color: var(--amber); border-color: var(--amber); background: rgba(255,184,48,0.08); }
+  .tag-api     { color: var(--green); border-color: var(--green); background: rgba(0,229,160,0.08); }
+
+  .prose { color: var(--text); line-height: 1.75; }
+  .prose p { margin-bottom: 14px; }
+  .prose strong { color: #fff; font-weight: 600; }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    padding: 1px 6px;
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  .callout {
+    border-left: 3px solid var(--amber);
+    background: rgba(255,184,48,0.05);
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .callout.danger { border-color: var(--red); background: rgba(255,77,106,0.05); }
+  .callout.info   { border-color: var(--accent); background: rgba(0,200,255,0.05); }
+  .callout.success { border-color: var(--green); background: rgba(0,229,160,0.05); }
+
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .callout.danger .callout-label  { color: var(--red); }
+  .callout.info .callout-label    { color: var(--accent); }
+  .callout.success .callout-label { color: var(--green); }
+
+  .callout p { margin: 0; font-size: 13px; }
+
+  .compare-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .compare-grid.col2 { grid-template-columns: repeat(2, 1fr); }
+  .compare-grid.col3 { grid-template-columns: repeat(3, 1fr); }
+
+  @media (max-width: 720px) {
+    .compare-grid.col2,
+    .compare-grid.col3 { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border2); }
+
+  .card-title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title.blue   { color: var(--accent); }
+  .card-title.green  { color: var(--green); }
+  .card-title.amber  { color: var(--amber); }
+  .card-title.red    { color: var(--red); }
+  .card-title.purple { color: var(--purple); }
+  .card-title.teal   { color: var(--teal); }
+
+  .kv-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 7px;
+    font-size: 12px;
+    align-items: baseline;
+  }
+
+  .kv-key {
+    font-family: var(--font-mono);
+    color: var(--text3);
+    min-width: 90px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .kv-val { color: var(--text); flex: 1; }
+
+  .tbl-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    background: var(--bg3);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  td strong { color: #fff; font-weight: 600; }
+  td code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--bg3);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  .rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.1em;
+    background: var(--accent);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 1s step-start infinite;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <div>
+      <div class="header-badge">AWS Solutions Architect Professional</div>
+      <h1>Practice Exam<span> Weak Topics — Complete Guide</span><span class="cursor"></span></h1>
+    </div>
+    <div class="header-meta">
+      15 topics covered<br>
+      All exam traps flagged<br>
+      Decision trees & comparisons
+    </div>
+  </header>
+
+  <div class="toc">
+    <div class="toc-title">// Contents (All 15 Topics)</div>
+    <div class="toc-grid">
+      <a href="#orc-parquet">ORC vs Parquet</a>
+      <a href="#secrets-lambda-ep">Secrets vs Lambda EP</a>
+      <a href="#dynamodb-cost">DynamoDB Cost Tracking</a>
+      <a href="#step-datapipeline">Step Functions & Tools</a>
+      <a href="#vpc-endpoints">VPC Endpoints Types</a>
+      <a href="#bucket-acls">Bucket ACLs & Ownership</a>
+      <a href="#appsync-sqs">AppSync & SQS</a>
+      <a href="#kms-datakey">KMS DataKey Policies</a>
+      <a href="#org-billing">Organization Billing</a>
+      <a href="#storage-gateway">Storage Gateway Cache</a>
+      <a href="#cloudfront-s3">CloudFront + S3 Issues</a>
+      <a href="#firehose-centralized">Firehose Centralized Logs</a>
+      <a href="#aurora-logs">Aurora Slow Query Logs</a>
+      <a href="#ec2-cwlogs">EC2 CloudWatch Logs</a>
+      <a href="#xray-setup">X-Ray SDK Tracing</a>
+    </div>
+  </div>
+
+  <!-- 01: ORC vs Parquet -->
+  <div class="section" id="orc-parquet">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Apache ORC vs Apache Parquet</span>
+      <span class="section-tag tag-storage">Data Formats</span>
+    </div>
+    <div class="prose">
+      <p>Both are columnar storage formats optimized for analytical workloads, but differ significantly in compression, interoperability, and compatibility with AWS services. Understanding the trade-offs is critical for exam scenarios.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Apache Parquet</div>
+        <div class="kv-row"><span class="kv-key">Format</span><span class="kv-val">Language-agnostic; widely adopted</span></div>
+        <div class="kv-row"><span class="kv-key">Compression</span><span class="kv-val">Snappy (default), GZIP, LZO, BROTLI</span></div>
+        <div class="kv-row"><span class="kv-key">Tools</span><span class="kv-val">Spark, Presto, Hive, Athena, Glue</span></div>
+        <div class="kv-row"><span class="kv-key">Schema Evolution</span><span class="kv-val">Good; supports added/removed columns</span></div>
+        <div class="kv-row"><span class="kv-key">File Size</span><span class="kv-val">Larger; less efficient compression</span></div>
+        <div class="kv-row"><span class="kv-key">Best For</span><span class="kv-val">Multi-tool ecosystems; Athena, Spark jobs</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">Apache ORC</div>
+        <div class="kv-row"><span class="kv-key">Format</span><span class="kv-val">Optimized for Hive; Hadoop-centric</span></div>
+        <div class="kv-row"><span class="kv-key">Compression</span><span class="kv-val">ZLIB (default), Snappy, LZO, ZSTD</span></div>
+        <div class="kv-row"><span class="kv-key">Tools</span><span class="kv-val">Hive, Spark (via ORC library), EMR</span></div>
+        <div class="kv-row"><span class="kv-key">Schema Evolution</span><span class="kv-val">Excellent; type widening (int→bigint)</span></div>
+        <div class="kv-row"><span class="kv-key">File Size</span><span class="kv-val">Smaller; better compression ratio</span></div>
+        <div class="kv-row"><span class="kv-key">Best For</span><span class="kv-val">Hive warehouses; cost-optimized storage</span></div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Parquet</th>
+            <th>ORC</th>
+            <th>Exam Decision</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Throughput</strong></td>
+            <td>Good; ~faster reads in Spark</td>
+            <td>Excellent; better compression = faster over S3</td>
+            <td>ORC if cost/bandwidth critical; Parquet if speed</td>
+          </tr>
+          <tr>
+            <td><strong>Storage Cost</strong></td>
+            <td>Higher; larger files</td>
+            <td>Lower; 20-30% smaller footprint</td>
+            <td>ORC for long-term storage and cost optimization</td>
+          </tr>
+          <tr>
+            <td><strong>Athena Support</strong></td>
+            <td>✓ Native support</td>
+            <td>✓ Native support</td>
+            <td>Both work; Parquet is standard default</td>
+          </tr>
+          <tr>
+            <td><strong>Hive Warehouse</strong></td>
+            <td>Supported</td>
+            <td>✓ Optimized; recommended</td>
+            <td>ORC for pure Hive warehouses</td>
+          </tr>
+          <tr>
+            <td><strong>Schema Changes</strong></td>
+            <td>Can add columns</td>
+            <td>Can expand types (int→bigint)</td>
+            <td>ORC if frequent schema evolution</td>
+          </tr>
+          <tr>
+            <td><strong>Cross-Platform</strong></td>
+            <td>✓ Better; PySpark, R, Java</td>
+            <td>Hadoop-focused</td>
+            <td>Parquet if multi-language ecosystem</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>Parquet is the default for Athena queries</strong> — if the question shows Athena and mentions ORC, consider: is cost optimization the goal (ORC), or ease of use (Parquet)? | <strong>ORC is better for Hive warehouses on EMR</strong> — if scenario mentions "Hive warehouse," "EMR," or "long-running warehouse," ORC often wins. | Both support same tools (Spark, Presto, Glue); don't let tool availability confuse the decision.</p>
+    </div>
+  </div>
+
+  <!-- 02: Secrets Manager VPC Endpoint vs Lambda VPC Endpoint -->
+  <div class="section" id="secrets-lambda-ep">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Secrets Manager VPC Endpoint vs Lambda VPC Endpoint</span>
+      <span class="section-tag tag-security">VPC Connectivity</span>
+    </div>
+    <div class="prose">
+      <p>Both enable private, VPC-accessible endpoints, but serve different purposes. Secrets Manager endpoint retrieves secrets without NAT Gateway; Lambda endpoint is not a direct interface endpoint — it's about invoking Lambda inside VPC.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Secrets Manager VPC Endpoint</div>
+        <div class="kv-row"><span class="kv-key">Type</span><span class="kv-val">Interface (PrivateLink) endpoint</span></div>
+        <div class="kv-row"><span class="kv-key">Access</span><span class="kv-val">Retrieve secrets without internet; private access</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">EC2, RDS retrieve secrets without internet</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">~$0.01/hour + data transfer</span></div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">Create endpoint in VPC; update security group</span></div>
+        <div class="kv-row"><span class="kv-key">Benefits</span><span class="kv-val">No NAT Gateway cost; no internet traversal</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">Lambda "VPC Endpoint"</div>
+        <div class="kv-row"><span class="kv-key">Reality</span><span class="kv-val">No dedicated endpoint; use security groups</span></div>
+        <div class="kv-row"><span class="kv-key">Pattern</span><span class="kv-val">Lambda in VPC connected to other resources</span></div>
+        <div class="kv-row"><span class="kv-key">Confusion</span><span class="kv-val">Question may mention "Lambda VPC interface" (trap)</span></div>
+        <div class="kv-row"><span class="kv-key">Real Scenario</span><span class="kv-val">Lambda inside VPC accessing Secrets Manager endpoint</span></div>
+        <div class="kv-row"><span class="kv-key">Solution</span><span class="kv-val">Deploy Lambda in VPC; configure ENI security groups</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Exam Scenario Recognition</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>"Lambda needs to retrieve secrets securely without internet access:"</strong> → Create Secrets Manager VPC endpoint in Lambda's VPC. Lambda invokes GetSecretValue via endpoint (no internet needed). Cost: VPC endpoint + Lambda ENI costs.</p>
+        <p><strong>"One Lambda needs to call another Lambda in VPC:"</strong> → Use security groups + VPC peering or direct invocation. No "endpoint" needed; this is function-to-function communication. Or use Lambda as ALB target.</p>
+        <p><strong>"Reduce NAT Gateway charges for Secrets Manager access:"</strong> → Replace NAT → internet → SecretsManager with VPC endpoint. Saves NAT data transfer costs (~$0.045/GB to ~$0.01/request).</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-label">Key Distinction</span>
+      <p><strong>VPC Endpoint:</strong> AWS service accessible from inside VPC (Secrets Manager, DynamoDB, S3, etc.). <strong>"Lambda Endpoint":</strong> Trap answer. Lambda functions are invoked (synchronously or via SQS), not called via an "endpoint." If question says "Lambda VPC interface endpoint," it's likely incorrect or refers to Lambda ENI configuration.</p>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-label">Best Practice</span>
+      <p>For resources in private subnets (no NAT/IGW): 1) Create interface VPC endpoint for Secrets Manager in VPC. 2) Deploy Lambda in same VPC (or private subnet). 3) Lambda security group allows outbound to Secrets Manager endpoint. 4) No internet access = no internet charges, high security.</p>
+    </div>
+  </div>
+
+  <!-- 03: DynamoDB Cost Tracking -->
+  <div class="section" id="dynamodb-cost">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Cost-Effective DynamoDB Usage Tracking Per Tenant</span>
+      <span class="section-tag tag-cost">Multi-Tenancy & Cost Allocation</span>
+    </div>
+    <div class="prose">
+      <p>The goal: track and allocate DynamoDB usage costs per tenant accurately and low-maintenance. Multiple approaches exist; the exam tests design trade-offs between accuracy, operational burden, and cost.</p>
+    </div>
+
+    <div class="compare-grid col3" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Approach 1: CloudWatch Metrics + Cost Allocation Tags</div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">Tag DynamoDB table by tenant; CloudWatch tracks RCU/WCU</span></div>
+        <div class="kv-row"><span class="kv-key">Cost Attribute</span><span class="kv-val">AWS Cost Explorer; filter by tag</span></div>
+        <div class="kv-row"><span class="kv-key">Accuracy</span><span class="kv-val">Good; rolled up daily/monthly</span></div>
+        <div class="kv-row"><span class="kv-key">Maintenance</span><span class="kv-val">Low; automated tagging</span></div>
+        <div class="kv-row"><span class="kv-key">Latency</span><span class="kv-val">~24hrs for cost visibility</span></div>
+        <div class="kv-row"><span class="kv-key">Verdict</span><span class="kv-val">✓ Most cost-effective & lowest-maintenance</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title green">Approach 2: Separate Tables Per Tenant</div>
+        <div class="kv-row"><span class="kv-key">Architecture</span><span class="kv-val">One table per tenant; isolated billing</span></div>
+        <div class="kv-row"><span class="kv-key">Accuracy</span><span class="kv-val">Excellent; individual table metrics</span></div>
+        <div class="kv-row"><span class="kv-key">Maintenance</span><span class="kv-val">High; table creation, deletion, monitoring</span></div>
+        <div class="kv-row"><span class="kv-key">Cost Overhead</span><span class="kv-val">High; each table has minimum cost</span></div>
+        <div class="kv-row"><span class="kv-key">Scalability</span><span class="kv-val">Poor; 100s of tenants = 100s of tables</span></div>
+        <div class="kv-row"><span class="kv-key">Verdict</span><span class="kv-val">✗ Not scalable; high operational burden</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title purple">Approach 3: Partition Key Isolation + Cloudwatch Insights</div>
+        <div class="kv-row"><span class="kv-key">Design</span><span class="kv-val">Single table; tenant ID in partition key</span></div>
+        <div class="kv-row"><span class="kv-key">Tracking</span><span class="kv-val">Query DynamoDB Streams → Lambda → CloudWatch Logs</span></div>
+        <div class="kv-row"><span class="kv-key">Accuracy</span><span class="kv-val">Good; per-request logging</span></div>
+        <div class="kv-row"><span class="kv-key">Maintenance</span><span class="kv-val">Moderate; stream processing pipeline</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">Low table cost + Streams + Lambda + Logs storage</span></div>
+        <div class="kv-row"><span class="kv-key">Verdict</span><span class="kv-val">✓ Good balance; moderate complexity</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Exam Question Pattern & Recommended Answer</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Scenario:</strong> "Multi-tenant SaaS app using DynamoDB. Need to track per-tenant costs for billing and chargeback. Most accurate AND low-maintenance approach?"</p>
+        <p><strong>Correct Answer:</strong> Use Cost Allocation Tags on DynamoDB tables + AWS Cost Explorer. Tag each table (or partition) with tenant ID. AWS automatically aggregates costs. CloudWatch tracks ConsumedReadCapacityUnits and ConsumedWriteCapacityUnits per table, queryable for cost attribution.</p>
+        <p><strong>Why this wins:</strong> Zero operational overhead (AWS manages billing); accurate to billing cycle; integrates with AWS Cost Management tools; scales to any number of tenants seamlessly.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Approach</th>
+            <th>Accuracy</th>
+            <th>Maintenance</th>
+            <th>Scalability</th>
+            <th>Choose When</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cost Allocation Tags</strong></td>
+            <td>Excellent (AWS native)</td>
+            <td>Very Low</td>
+            <td>Unlimited</td>
+            <td>Standard recommendation; most SaaS apps</td>
+          </tr>
+          <tr>
+            <td><strong>Separate Tables</strong></td>
+            <td>Perfect (isolated metrics)</td>
+            <td>Very High</td>
+            <td>Poor (&lt;10 tenants)</td>
+            <td>Only for small fixed # of high-value tenants</td>
+          </tr>
+          <tr>
+            <td><strong>Streams + Logs + Analytics</strong></td>
+            <td>Very Good (real-time)</td>
+            <td>High (pipeline management)</td>
+            <td>Good</td>
+            <td>When real-time chargebacks needed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>Don't pick "separate tables per tenant" unless explicitly told to do so.</strong> It's operationally infeasible for 100+ tenants and doesn't actually reduce total DynamoDB costs (still pay per table). | <strong>CloudWatch Insights (Logs) option is overkill</strong> for typical cost tracking — it's better for debugging/analysis, not billing. | <strong>Cost Allocation Tags are AWS native</strong> — this is the "set it and forget it" answer for exam scenarios asking for "most accurate AND low-maintenance."</p>
+    </div>
+  </div>
+
+  <!-- 04: Step Functions, S3, DataPipeline, DataSync -->
+  <div class="section" id="step-datapipeline">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Step Functions Triggers & Data Pipeline vs DataSync</span>
+      <span class="section-tag tag-data">Workflow & Data Movement Orchestration</span>
+    </div>
+    <div class="prose">
+      <p>Step Functions cannot be directly triggered by S3 events. This is a common trap. Understanding the correct invocation pattern and distinguishing DataPipeline from DataSync is essential.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Step Functions Trigger Pattern</div>
+        <div class="kv-row"><span class="kv-key">Direct S3 Trigger</span><span class="kv-val">✗ NOT supported</span></div>
+        <div class="kv-row"><span class="kv-key">Correct Pattern</span><span class="kv-val">S3 → SNS/SQS → Lambda → invoke Step Functions</span></div>
+        <div class="kv-row"><span class="kv-key">Why</span><span class="kv-val">Step Functions API requires explicit invoke call</span></div>
+        <div class="kv-row"><span class="kv-key">Alternative</span><span class="kv-val">S3 → EventBridge → Step Functions (if EventBridge rules exist)</span></div>
+        <div class="kv-row"><span class="kv-key">Latency</span><span class="kv-val">~1-2 sec (SNS/SQS) + Lambda cold start</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title teal">AWS DataPipeline</div>
+        <div class="kv-row"><span class="kv-key">Purpose</span><span class="kv-val">Managed ETL orchestration; legacy (use Glue now)</span></div>
+        <div class="kv-row"><span class="kv-key">Trigger</span><span class="kv-val">Time-based (cron), on-demand, or preceding pipeline</span></div>
+        <div class="kv-row"><span class="kv-key">Execution</span><span class="kv-val">EMR, EC2, Hive, Spark jobs</span></div>
+        <div class="kv-row"><span class="kv-key">Status</span><span class="kv-val">Older; AWS recommends Glue + Step Functions</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Large-scale batch ETL on EMR</span></div>
+      </div>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title green">AWS DataSync</div>
+        <div class="kv-row"><span class="kv-key">Purpose</span><span class="kv-val">High-speed data transfer; not ETL</span></div>
+        <div class="kv-row"><span class="kv-key">Sources</span><span class="kv-val">NFS, SMB, S3, EBS, FSx, Storage Gateway</span></div>
+        <div class="kv-row"><span class="kv-key">Destinations</span><span class="kv-val">S3, EFS, FSx (Windows/Lustre/NFS)</span></div>
+        <div class="kv-row"><span class="kv-key">Speed</span><span class="kv-val">~10Gbps; optimized transfers</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">Per-GiB transferred; no storage overheads</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Migrate on-prem NAS → AWS storage; sync backups</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title purple">AWS DataPipeline vs Step Functions</div>
+        <div class="kv-row"><span class="kv-key">DataPipeline</span><span class="kv-val">Legacy; use for existing EMR pipelines only</span></div>
+        <div class="kv-row"><span class="kv-key">Step Functions</span><span class="kv-val">Modern; Glue jobs, Lambda, ECS containers</span></div>
+        <div class="kv-row"><span class="kv-key">Recommendation</span><span class="kv-val">Step Functions + Glue > DataPipeline (exam won't ask for DataPipeline as "best" in new scenarios)</span></div>
+        <div class="kv-row"><span class="kv-key">Integration</span><span class="kv-val">DataPipeline runs external tasks; Step Functions is serverless orchestration</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Exam Scenario: Correct Answer Pattern</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Q: "S3 upload triggers ETL job. What's the architecture?"</strong></p>
+        <p><strong>Trap:</strong> "S3 → Step Functions directly" — NOT possible.</p>
+        <p><strong>Correct:</strong> "S3 event → SNS/SQS → Lambda → Step Functions invocation → Glue job".</p>
+        <p><strong>Q: "Move 100TB from on-prem NAS to AWS S3 quickly?"</strong></p>
+        <p><strong>Answer:</strong> "AWS DataSync" — handles large transfers with optimization; not DataPipeline.</p>
+        <p><strong>Q: "Legacy Hadoop pipeline on EMR with dependencies?"</strong></p>
+        <p><strong>Answer:</strong> "DataPipeline or Step Functions" — both work; prefer Step Functions for new designs.</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>S3 cannot trigger Step Functions directly.</strong> If question implies this, the intermediate service (Lambda, SNS, SQS) is missing. | <strong>DataPipeline is legacy.</strong> Exam may offer it as a trap answer for modern scenarios (use Step Functions + Glue instead). | <strong>DataSync ≠ DataPipeline.</strong> DataSync moves data; DataPipeline orchestrates workflows. Different tools for different jobs.</p>
+    </div>
+  </div>
+
+  <!-- 05: VPC Endpoints -->
+  <div class="section" id="vpc-endpoints">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Interface vs Gateway VPC Endpoints</span>
+      <span class="section-tag tag-network">VPC Networking</span>
+    </div>
+    <div class="prose">
+      <p>Two types of VPC endpoints serve different purposes and architectural patterns. Understanding when to use each is critical for secure, cost-optimized networking.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Interface Endpoints (PrivateLink)</div>
+        <div class="kv-row"><span class="kv-key">Type</span><span class="kv-val">Elastic Network Interface (ENI) in VPC</span></div>
+        <div class="kv-row"><span class="kv-key">Services</span><span class="kv-val">SNS, SQS, Kinesis, Secrets Manager, CodeBuild, etc.</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">~$0.01/hour per endpoint zone + data processing</span></div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">Choose subnets, security groups, zone</span></div>
+        <div class="kv-row"><span class="kv-key">DNS</span><span class="kv-val">Private DNS optional; resolve to ENI private IP</span></div>
+        <div class="kv-row"><span class="kv-key">Private Link</span><span class="kv-val">✓ Supported; share across AWS accounts</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title teal">Gateway Endpoints</div>
+        <div class="kv-row"><span class="kv-key">Type</span><span class="kv-val">Route table entry; no ENI created</span></div>
+        <div class="kv-row"><span class="kv-key">Services</span><span class="kv-val">S3 and DynamoDB ONLY</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">FREE; no hourly charge, data transfer free</span></div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">Route table rule: destination = S3/DynamoDB, target = endpoint</span></div>
+        <div class="kv-row"><span class="kv-key">DNS</span><span class="kv-val">Regional DNS name; automatic resolution</span></div>
+        <div class="kv-row"><span class="kv-key">Private Link</span><span class="kv-val">✗ Not supported; not shareable across accounts</span></div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Interface</th>
+            <th>Gateway</th>
+            <th>Use Gateway When</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Availability</strong></td>
+            <td>Per-zone (create in multiple zones)</td>
+            <td>Regional (no zone selection)</td>
+            <td>Simpler; avoids multi-zone complexity</td>
+          </tr>
+          <tr>
+            <td><strong>DNS Resolution</strong></td>
+            <td>Manual or private DNS</td>
+            <td>Automatic; transparent to application</td>
+            <td>Zero code changes in app; traffic auto-routed</td>
+          </tr>
+          <tr>
+            <td><strong>Pricing</strong></td>
+            <td>$0.01/hour/zone + premium</td>
+            <td>Free</td>
+            <td>Cost-sensitive; no budget for interface</td>
+          </tr>
+          <tr>
+            <td><strong>Resource Policy</strong></td>
+            <td>Can restrict by IAM principal</td>
+            <td>Can restrict by bucket/table policy</td>
+            <td>Both support fine-grained control</td>
+          </tr>
+          <tr>
+            <td><strong>Scope</strong></td>
+            <td>Limited to one VPC</td>
+            <td>Limited to one VPC (no cross-account)</td>
+            <td>Gateway adequate; no sharing needed</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Key Decision Matrix</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Q: EC2 in private subnet accessing S3?</strong> → Gateway endpoint (free, no setup, automatic). Q: Lambda in VPC accessing SNS? → Interface endpoint (SNS not supported by Gateway). Q: Cross-account access to DynamoDB? → Lambda in Account B assumes cross-account role; use Gateway endpoint in own VPC (no cross-account support for gateways). Q: Minimize costs for private DynamoDB access? → Gateway endpoint (free).</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>Gateway endpoints are ONLY for S3 and DynamoDB.</strong> If question mentions SNS/SQS/Secrets Manager, you need Interface endpoint. | <strong>Gateway endpoint is FREE.</strong> If cost optimization is mentioned for S3/DynamoDB access, the answer is Gateway. | <strong>Interface endpoints cost money.</strong> If question asks to "minimize costs," don't pick Interface if Gateway works.</p>
+    </div>
+  </div>
+
+  <!-- 06: Bucket ACLs & Ownership -->
+  <div class="section" id="bucket-acls">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">Bucket ACLs & Bucket Ownership Enforcement</span>
+      <span class="section-tag tag-security">S3 Access Control</span>
+    </div>
+    <div class="prose">
+      <p>S3 has evolved access control mechanisms. Understanding ACLs, "Bucket Owner Enforced," and "Bucket Owner Preferred" modes is essential for multi-account S3 access and compliance.</p>
+    </div>
+
+    <div class="compare-grid col3" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Bucket ACLs (Legacy)</div>
+        <div class="kv-row"><span class="kv-key">Definition</span><span class="kv-val">Grants per-object permissions (Public, Authenticated)</span></div>
+        <div class="kv-row"><span class="kv-key">Scope</span><span class="kv-val">Individual object; not granular by principal</span></div>
+        <div class="kv-row"><span class="kv-key">Security</span><span class="kv-val">Risky if used (public = internet accessible)</span></div>
+        <div class="kv-row"><span class="kv-key">Status</span><span class="kv-val">Deprecated; AWS recommends bucket policies instead</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Only if legacy application requires it</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title green">Bucket Owner Enforced</div>
+        <div class="kv-row"><span class="kv-key">Effect</span><span class="kv-val">ACLs DISABLED; all objects owned by bucket owner</span></div>
+        <div class="kv-row"><span class="kv-key">Access Control</span><span class="kv-val">Only bucket & object policies apply (no ACLs)</span></div>
+        <div class="kv-row"><span class="kv-key">Cross-Account</span><span class="kv-val">Account B uploads → Account A owns object</span></div>
+        <div class="kv-row"><span class="kv-key">Security</span><span class="kv-val">✓ Maximum; centralized ownership</span></div>
+        <div class="kv-row"><span class="kv-key">Recommended</span><span class="kv-val">✓ YES; best practice</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title purple">Bucket Owner Preferred</div>
+        <div class="kv-row"><span class="kv-key">Effect</span><span class="kv-val">ACLs can still be used; owner preference set</span></div>
+        <div class="kv-row"><span class="kv-key">Behavior</span><span class="kv-val">Default = bucket owner (unless uploading principal specifies ACL)</span></div>
+        <div class="kv-row"><span class="kv-key">Cross-Account</span><span class="kv-val">Account B uploads → can specify ACL (but deprecated)</span></div>
+        <div class="kv-row"><span class="kv-key">Security</span><span class="kv-val">Moderate; still allows ACLs if explicitly set</span></div>
+        <div class="kv-row"><span class="kv-key">Recommended</span><span class="kv-val">✗ NO; use Enforced instead</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Cross-Account Upload Scenarios</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Scenario 1: Account B uploads to Account A's bucket with "Owner Enforced"</strong></p>
+        <p>Account A (bucket owner) ALWAYS owns the object, regardless of who uploaded it. If Account B later deletes their credentials, they cannot access the object. Only Account A's bucket/object policies grant access. This is the safest model for compliance (e.g., "owner always retains control").</p>
+        <p><strong>Scenario 2: Account B uploads with "Owner Preferred"</strong></p>
+        <p>Object ownership defaults to bucket owner (Account A), but Account B can specify ACL="bucket-owner-full-control" or similar. Objects default to Account A ownership, but this is more permissive than Enforced. Not recommended.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mode</th>
+            <th>ACLs Allowed</th>
+            <th>Default Owner</th>
+            <th>When to Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ACL Enabled (default)</strong></td>
+            <td>✓ Yes</td>
+            <td>Uploading account (risky)</td>
+            <td>Legacy apps only; NOT recommended</td>
+          </tr>
+          <tr>
+            <td><strong>Bucket Owner Preferred</strong></td>
+            <td>✓ Yes (but discouraged)</td>
+            <td>Bucket owner (default)</td>
+            <td>Transition layer; avoid in new designs</td>
+          </tr>
+          <tr>
+            <td><strong>Bucket Owner Enforced</strong></td>
+            <td>✗ No</td>
+            <td>Bucket owner (always)</td>
+            <td>✓ Best practice; all modern deployments</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-label">Best Practice</span>
+      <p>Enable "Bucket Owner Enforced" immediately on all S3 buckets. This prevents ACL-related security misconfigurations and ensures consistent ownership model. Combine with bucket policies for fine-grained access control. For compliance audits, only object/bucket policies are evaluated.</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>ACLs are NOT the modern way to control S3 access.</strong> If question emphasizes "fine-grained access control," the answer is bucket/object policies, not ACLs. | <strong>"Bucket Owner Enforced" = ACLs disabled.</strong> If question says "prevent external account ownership of objects," the answer is "Bucket Owner Enforced." | Don't conflate "Preferred" with "Enforced;" they're different.</p>
+    </div>
+  </div>
+
+  <!-- 07: AppSync & SQS Long Polling -->
+  <div class="section" id="appsync-sqs">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title">AWS AppSync & SQS Long Polling</span>
+      <span class="section-tag tag-api">Real-Time APIs & Messaging</span>
+    </div>
+    <div class="prose">
+      <p>AppSync provides GraphQL APIs with real-time subscriptions. SQS long polling reduces empty responses and costs. Understanding their interplay and use cases prevents architectural mistakes on the exam.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">AWS AppSync</div>
+        <div class="kv-row"><span class="kv-key">Purpose</span><span class="kv-val">Managed GraphQL API; resolves queries/mutations/subscriptions</span></div>
+        <div class="kv-row"><span class="kv-key">Data Source</span><span class="kv-val">Lambda, RDS, DynamoDB, Elasticsearch, HTTP endpoints</span></div>
+        <div class="kv-row"><span class="kv-key">Real-Time</span><span class="kv-val">✓ WebSocket subscriptions; push data to clients</span></div>
+        <div class="kv-row"><span class="kv-key">Authentication</span><span class="kv-val">API Key, Cognito, OIDC, IAM</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Mobile apps, dashboards, collaborative tools</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title teal">SQS Long Polling</div>
+        <div class="kv-row"><span class="kv-key">Mechanism</span><span class="kv-val">Receiver waits up to 20s for message arrival</span></div>
+        <div class="kv-row"><span class="kv-key">Vs Short Polling</span><span class="kv-val">Short = returns immediately (even if empty); Long = waits</span></div>
+        <div class="kv-row"><span class="kv-key">Cost Savings</span><span class="kv-val">Fewer API calls = lower costs (~80% reduction possible)</span></div>
+        <div class="kv-row"><span class="kv-key">Configuration</span><span class="kv-val">Set WaitTimeSeconds = 1-20 on queue or receive request</span></div>
+        <div class="kv-row"><span class="kv-key">Latency</span><span class="kv-val">Up to 20s delay if queue is empty; then ~0s if msg arrives</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">When AppSync + SQS Are Used Together</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Scenario:</strong> User submits a long-running task via AppSync GraphQL mutation. Task is queued in SQS. Worker consumes with long polling (WaitTimeSeconds=20). When done, worker publishes event. AppSync subscription pushes result to connected client.</p>
+        <p><strong>Flow:</strong> Client (AppSync sub) → mutation submitted → SQS enqueue → Worker (long poll) → task processing → SNS publish → AppSync resolves and sends to subscription clients.</p>
+        <p><strong>Benefits:</strong> AppSync provides real-time UI updates; SQS handles async work; long polling reduces costs and worker CPU spinning.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <span class="callout-label">AppSync Resolvers & Data Sources</span>
+      <p>AppSync can invoke Lambda, which calls SQS. Resolver VTL (Velocity Template Language) maps GraphQL input → SQS SendMessage. For subscriptions, GraphQL subscription resolver triggers on SNS topic message (or other events). Real-time updates flow back to WebSocket clients automatically.</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>AppSync is for GraphQL APIs, not message queues.</strong> Don't confuse AppSync subscriptions (real-time GraphQL) with SQS (async messaging). | <strong>SQS long polling WaitTimeSeconds = up to 20 seconds.</strong> If question asks "how to reduce empty ReceiveMessage calls?" → Long polling is the answer. | AppSync + SQS together = async task submission with real-time status updates. Recognize this pattern.</p>
+    </div>
+  </div>
+
+  <!-- 08: KMS DataKey Policies -->
+  <div class="section" id="kms-datakey">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <span class="section-title">KMS GenerateDataKey & Key Policies</span>
+      <span class="section-tag tag-security">Encryption & Key Management</span>
+    </div>
+    <div class="prose">
+      <p>KMS provides customer-managed keys (CMKs). Understanding kms:GenerateDataKey, asymmetric keys, and policy requirements is critical for data encryption architecture.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">kms:GenerateDataKey (Symmetric)</div>
+        <div class="kv-row"><span class="kv-key">Function</span><span class="kv-val">Returns plaintext + encrypted data key</span></div>
+        <div class="kv-row"><span class="kv-key">Use</span><span class="kv-val">Local encryption of large payloads; send encrypted data to storage</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">$0.03 per 10K requests</span></div>
+        <div class="kv-row"><span class="kv-key">Permissions</span><span class="kv-val">Principal needs kms:GenerateDataKey on CMK</span></div>
+        <div class="kv-row"><span class="kv-key">Asymmetric</span><span class="kv-val">Not available for asymmetric keys</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title teal">Asymmetric Keys (RSA/ECC)</div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Public key encryption; data signed without KMS access</span></div>
+        <div class="kv-row"><span class="kv-key">Operations</span><span class="kv-val">kms:Encrypt (with public key), kms:Decrypt (private key only)</span></div>
+        <div class="kv-row"><span class="kv-key">Pattern</span><span class="kv-val">Distribute public key; keep private key in KMS</span></div>
+        <div class="kv-row"><span class="kv-key">Benefit</span><span class="kv-val">Encrypt without contacting KMS (offline encryption)</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">Same as symmetric; higher vCPU per request</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">KMS Key Policy Requirements</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Principal Permissions:</strong> Each principal (user, role, service) calling GenerateDataKey must have explicit <code>kms:GenerateDataKey</code> permission in the CMK key policy OR an IAM policy that includes kms:GenerateDataKey with the key ARN as resource.</p>
+        <p><strong>Cross-Account Access:</strong> If Account B needs to call GenerateDataKey on Account A's CMK, Account A must include Account B's role ARN in the key policy (or add a separate policy statement). IAM policies alone are insufficient for cross-account.</p>
+        <p><strong>Example Key Policy Statement:</strong> <code>{"Effect": "Allow", "Principal": {"AWS": "arn:aws:iam::ACCOUNT-B:role/DataKey"}, "Action": "kms:GenerateDataKey", "Resource": "*"}</code></p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Permission Needed</th>
+            <th>Where Defined</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>EC2 (IAM role) calls GenerateDataKey</strong></td>
+            <td>kms:GenerateDataKey</td>
+            <td>IAM role policy + KMS key policy (both needed)</td>
+          </tr>
+          <tr>
+            <td><strong>Lambda in Account B calls Account A's CMK</strong></td>
+            <td>kms:GenerateDataKey</td>
+            <td>Account A key policy must allow Account B role</td>
+          </tr>
+          <tr>
+            <td><strong>Decrypt data encrypted with GenerateDataKey</strong></td>
+            <td>kms:Decrypt</td>
+            <td>IAM role policy + KMS key policy</td>
+          </tr>
+          <tr>
+            <td><strong>Sign with asymmetric key</strong></td>
+            <td>kms:Sign</td>
+            <td>IAM role policy + KMS key policy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-label">Best Practice</span>
+      <p>For cross-account GenerateDataKey: 1) Create CMK in Account A with key policy allowing Account B role. 2) Add kms:GenerateDataKey + kms:Decrypt to Account B's IAM role. 3) Test cross-account call from Account B. 4) Monitor CloudTrail for policy violations.</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>IAM policy alone is NOT sufficient for KMS access.</strong> Key policy must also grant permission. | <strong>GenerateDataKey only works with symmetric keys.</strong> If question mentions asymmetric + GenerateDataKey, it's incorrect (use kms:Encrypt instead). | <strong>Cross-account access requires key policy change.</strong> IAM role policy only controls principal; key policy allows the cross-account principal.</p>
+    </div>
+  </div>
+
+  <!-- 09: Organization Billing Modes -->
+  <div class="section" id="org-billing">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <span class="section-title">AWS Organization: All Features vs Consolidated Billing</span>
+      <span class="section-tag tag-cost">Multi-Account Management</span>
+    </div>
+    <div class="prose">
+      <p>AWS Organizations supports two modes with different capabilities. Understanding the trade-offs between Consolidated Billing Only and All Features is essential for multi-account governance.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Consolidated Billing Only</div>
+        <div class="kv-row"><span class="kv-key">Scope</span><span class="kv-val">Combine bills from linked accounts; no additional controls</span></div>
+        <div class="kv-row"><span class="kv-key">SCP</span><span class="kv-val">✗ NOT available</span></div>
+        <div class="kv-row"><span class="kv-key">Cross-Account Roles</span><span class="kv-val">Manual setup required; no organizational delegation</span></div>
+        <div class="kv-row"><span class="kv-key">Trusted Access</span><span class="kv-val">✗ NOT available</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">Free; only billing aggregation</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Simple multi-account billing; minimal governance</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title teal">All Features (Recommended)</div>
+        <div class="kv-row"><span class="kv-key">Scope</span><span class="kv-val">Consolidated billing + governance + SCP policies</span></div>
+        <div class="kv-row"><span class="kv-key">SCP</span><span class="kv-val">✓ YES; centralized permission boundaries</span></div>
+        <div class="kv-row"><span class="kv-key">Cross-Account Roles</span><span class="kv-val">Organizational delegated administration available</span></div>
+        <div class="kv-row"><span class="kv-key">Trusted Access</span><span class="kv-val">✓ YES; AWS services authorized to manage accounts</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">Free; better discounts via consolidated usage</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Enterprise multi-account; strong governance needed</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Key Capability Differences</div>
+      <div class="tbl-wrap" style="margin-top: 8px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Consolidated Billing</th>
+              <th>All Features</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Consolidated Billing</strong></td>
+              <td>✓ Yes</td>
+              <td>✓ Yes</td>
+            </tr>
+            <tr>
+              <td><strong>Service Control Policies (SCP)</strong></td>
+              <td>✗ No</td>
+              <td>✓ Yes</td>
+            </tr>
+            <tr>
+              <td><strong>Tag Policies</strong></td>
+              <td>✗ No</td>
+              <td>✓ Yes</td>
+            </tr>
+            <tr>
+              <td><strong>Backup Policies</strong></td>
+              <td>✗ No</td>
+              <td>✓ Yes</td>
+            </tr>
+            <tr>
+              <td><strong>CloudFormation StackSets in member accounts</strong></td>
+              <td>Manual setup</td>
+              <td>✓ Built-in delegation</td>
+            </tr>
+            <tr>
+              <td><strong>Reserved Instance (RI) Discount Sharing</strong></td>
+              <td>✓ Yes (across linked accounts)</td>
+              <td>✓ Yes (across organization)</td>
+            </tr>
+            <tr>
+              <td><strong>Delegated Admin Role (for services)</strong></td>
+              <td>✗ No</td>
+              <td>✓ Yes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title green">SCP (Service Control Policy) Explanation</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>What it does:</strong> SCPs are permission boundaries applied to organizational units (OUs) and member accounts. They prevent specific AWS actions across all accounts in the OU, regardless of IAM permissions.</p>
+        <p><strong>Example:</strong> Create SCP that denies <code>ec2:TerminateInstances</code> on all accounts in "production" OU. Even if an IAM role allows terminate, SCP blocks it.</p>
+        <p><strong>Use:</strong> Prevent accidental deletion, enforce encryption, restrict regions, deny root API access.</p>
+        <p><strong>Only available in "All Features" mode.</strong> Consolidated Billing Only cannot use SCPs.</p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-label">Best Practice</span>
+      <p>Always enable "All Features" when creating AWS Organizations. SCPs provide crucial governance and security. Cost savings from consolidated RI sharing and volume discounts offset any complexity. Consolidated Billing Only is rarely justified in production.</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>Consolidated Billing is NOT the same as "All Features."</strong> If question mentions SCP, Tag Policies, or Delegated Admin → answer includes "upgrade to All Features." | <strong>"All Features" is strictly better</strong> — no reason to stay on Consolidated Billing Only. | <strong>SCPs are permission BOUNDARIES, not grants.</strong> They restrict; they don't grant. A deny SCP = action denied even if IAM allows.</p>
+    </div>
+  </div>
+
+  <!-- 10: Storage Gateway Cache Operations -->
+  <div class="section" id="storage-gateway">
+    <div class="section-header">
+      <span class="section-num">10</span>
+      <span class="section-title">Storage Gateway: RefreshCache vs ResetCache</span>
+      <span class="section-tag tag-storage">On-Premise to Cloud</span>
+    </div>
+    <div class="prose">
+      <p>AWS Storage Gateway File Gateway caches frequently accessed files. Understanding cache refresh vs reset operations is essential for maintaining data consistency.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">RefreshCache</div>
+        <div class="kv-row"><span class="kv-key">Purpose</span><span class="kv-val">Sync cache with S3 backend; detects new/modified objects</span></div>
+        <div class="kv-row"><span class="kv-key">Scope</span><span class="kv-val">Specific NFS share or SMB share path</span></div>
+        <div class="kv-row"><span class="kv-key">Operation</span><span class="kv-val">Inventory S3 objects; update local cache index</span></div>
+        <div class="kv-row"><span class="kv-key">Data Retained</span><span class="kv-val">✓ Cached data stays; only metadata refreshed</span></div>
+        <div class="kv-row"><span class="kv-key">Latency</span><span class="kv-val">~1-5 min depending on object count</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Detect new S3 uploads; on-prem app needs latest list</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title teal">ResetCache</div>
+        <div class="kv-row"><span class="kv-key">Purpose</span><span class="kv-val">CLEAR all cached data; full restart of cache</span></div>
+        <div class="kv-row"><span class="kv-key">Scope</span><span class="kv-val">Specific share or entire gateway</span></div>
+        <div class="kv-row"><span class="kv-key">Operation</span><span class="kv-val">Delete local cache files; start fresh from S3</span></div>
+        <div class="kv-row"><span class="kv-key">Data Loss</span><span class="kv-val">✗ Cache lost (not S3); S3 data untouched</span></div>
+        <div class="kv-row"><span class="kv-key">Recovery</span><span class="kv-val">~1-5 hours for full cache rebuild (data re-download)</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Troubleshoot corrupted cache; free up local disk space</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">When to Use Each</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Scenario 1: S3 bucket updated externally (via AWS CLI).</strong> On-prem app needs to see new files. → RefreshCache (metadata sync, data stays cached).</p>
+        <p><strong>Scenario 2: Local cache is corrupted or stale; disk full.</strong> → ResetCache (clears local cache; S3 is source of truth).</p>
+        <p><strong>Scenario 3: Multiple gateways in sync; one is out of date.</strong> → RefreshCache on the out-of-date gateway to resync metadata.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Situation</th>
+            <th>Command</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cache is fast; occasional S3 changes</strong></td>
+            <td>RefreshCache periodically</td>
+            <td>Catch updates without losing cached performance</td>
+          </tr>
+          <tr>
+            <td><strong>Cache corruption suspected</strong></td>
+            <td>ResetCache</td>
+            <td>Full cache rebuild; resolves corruption</td>
+          </tr>
+          <tr>
+            <td><strong>Disk space critical on gateway</strong></td>
+            <td>ResetCache</td>
+            <td>Frees local cache; repopulates on demand</td>
+          </tr>
+          <tr>
+            <td><strong>On-prem app needs latest S3 inventory</strong></td>
+            <td>RefreshCache</td>
+            <td>Metadata updated; performance maintained</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>RefreshCache updates metadata only; ResetCache clears data.</strong> Don't reverse them. | <strong>ResetCache = cache loss (not data loss).</strong> S3 is always the source of truth; resetting local cache is safe. | <strong>RefreshCache is for ongoing sync;</strong> ResetCache is for recovery/cleanup.</p>
+    </div>
+  </div>
+
+  <!-- 11: CloudFront + S3 Origin -->
+  <div class="section" id="cloudfront-s3">
+    <div class="section-header">
+      <span class="section-num">11</span>
+      <span class="section-title">CloudFront + S3 Origin: Common Issues & 307 Errors</span>
+      <span class="section-tag tag-cdn">CDN & Origin Behavior</span>
+    </div>
+    <div class="prose">
+      <p>CloudFront with S3 as origin has specific behavioral quirks. Understanding redirect loops (307 errors), website endpoints vs REST API endpoints, and CORS is critical for exam scenarios.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">S3 REST API Endpoint (Correct for CloudFront)</div>
+        <div class="kv-row"><span class="kv-key">Format</span><span class="kv-val"><code>mybucket.s3.amazonaws.com</code> (or regional: mybucket.s3.us-west-2.amazonaws.com)</span></div>
+        <div class="kv-row"><span class="kv-key">Use</span><span class="kv-val">✓ CloudFront origin; native S3 API</span></div>
+        <div class="kv-row"><span class="kv-key">Bucket Policy</span><span class="kv-val">CloudFront uses OAI (Origin Access Identity) or OAC</span></div>
+        <div class="kv-row"><span class="kv-key">Redirect</span><span class="kv-val">None (clean); no 307</span></div>
+        <div class="kv-row"><span class="kv-key">CORS</span><span class="kv-val">Needed if cross-origin requests from browser</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title red">❌ S3 Website Endpoint (WRONG for CloudFront)</div>
+        <div class="kv-row"><span class="kv-key">Format</span><span class="kv-val"><code>mybucket.s3-website.amazonaws.com</code> (website hosting)</span></div>
+        <div class="kv-row"><span class="kv-key">Use</span><span class="kv-val">✗ NOT for CloudFront; only static website hosting</span></div>
+        <div class="kv-row"><span class="kv-key">Redirect</span><span class="kv-val">✗ Triggers 307 redirect loop if used with CloudFront</span></div>
+        <div class="kv-row"><span class="kv-key">Reason</span><span class="kv-val">Website endpoint redirects http → https; CloudFront re-sends</span></div>
+        <div class="kv-row"><span class="kv-key">Symptom</span><span class="kv-val">304 → 307 → 304 loop (infinite redirect)</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">307 Redirect Issue - Root Cause & Fix</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Problem:</strong> CloudFront origin set to S3 website endpoint. Client requests <code>https://cdn.example.com/page.html</code>. CloudFront hits S3 website endpoint, which responds with HTTP 307 redirect (upgrade http → https, or index.html redirect). CloudFront caches 307, re-requests, loop.</p>
+        <p><strong>Solution 1 (Recommended):</strong> Use S3 REST API endpoint (<code>mybucket.s3.amazonaws.com</code>), not website endpoint. CloudFront handles HTTPS; no redirect.</p>
+        <p><strong>Solution 2:</strong> If must use website endpoint, disable caching of 307/308/301/302 redirects in CloudFront cache policy (or set TTL=0 for error responses).</p>
+        <p><strong>Solution 3:</strong> Move index.html redirect logic to Lambda@Edge or CloudFront function (process inside CDN, avoid S3 redirect).</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Correct Choice</th>
+            <th>Why NOT the Alternative</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CloudFront → S3 static website</strong></td>
+            <td>S3 REST API endpoint + OAI</td>
+            <td>Website endpoint causes 307 redirect loops</td>
+          </tr>
+          <tr>
+            <td><strong>S3 website hosting (no CDN)</strong></td>
+            <td>S3 website endpoint</td>
+            <td>REST API doesn't support index.html redirection</td>
+          </tr>
+          <tr>
+            <td><strong>Cross-origin JavaScript requests</strong></td>
+            <td>Enable S3 CORS + CloudFront pass-through</td>
+            <td>Without CORS headers, browser blocks requests</td>
+          </tr>
+          <tr>
+            <td><strong>CloudFront + Private S3 bucket</strong></td>
+            <td>OAI (deprecated) or OAC (new) + bucket policy</td>
+            <td>Public bucket policy = security risk</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title green">Origin Access Control (OAC) vs Origin Access Identity (OAI)</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>OAI (Legacy):</strong> IAM user created in S3 backend. CloudFront signs requests as OAI user. Deprecated; AWS recommends OAC.</p>
+        <p><strong>OAC (Current):</strong> Native CloudFront service identity. Eliminates need for separate IAM user. Simpler setup; better security model. Supports S3 POST/PUT requests (OAI didn't).</p>
+        <p><strong>Recommendation:</strong> Use OAC for all new deployments. OAI still works but is being phased out.</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>S3 website endpoint WRONG with CloudFront.</strong> If question mentions 307 redirect + CloudFront + S3, the issue is almost always using website endpoint instead of REST API. | <strong>OAI is legacy; OAC is current.</strong> Exam may ask about both; prefer OAC as the "modern" answer. | <strong>Must use OAI/OAC to keep S3 bucket private.</strong> If CloudFront accesses open/public S3 bucket, it's a security misconfiguration.</p>
+    </div>
+  </div>
+
+  <!-- 12: Firehose Centralized Logs -->
+  <div class="section" id="firehose-centralized">
+    <div class="section-header">
+      <span class="section-num">12</span>
+      <span class="section-title">Send CloudWatch Logs to Centralized Account via Firehose</span>
+      <span class="section-tag tag-logging">Multi-Account Logging</span>
+    </div>
+    <div class="prose">
+      <p>Centralizing logs from multiple accounts to a single account is a common compliance and operational requirement. CloudWatch Logs + Kinesis Firehose is the standard pattern.</p>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title blue">Architecture: Multi-Account Logs → Firehose</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Account A (Log Source):</strong> EC2, Lambda, RDS emit logs to CloudWatch Logs.</p>
+        <p><strong>CloudWatch Logs Subscription Filter:</strong> Pattern matches logs; sends to Kinesis Firehose delivery stream (in Account A or Account B).</p>
+        <p><strong>Firehose Delivery Stream:</strong> Aggregates and batches logs; writes to S3 bucket (in central Account B).</p>
+        <p><strong>S3 Bucket (Central Account B):</strong> Centralized log storage; can be analyzed by Athena, Redshift, or custom tools.</p>
+        <p><strong>Cross-Account Setup:</strong> If Firehose destination is in separate account, IAM role must allow cross-account write.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title green">Subscription Filter in Each Account</div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">Logs trigger → Firehose (same or cross-account)</span></div>
+        <div class="kv-row"><span class="kv-key">Permissions</span><span class="kv-val">CloudWatch Logs role needs firehose:PutRecord</span></div>
+        <div class="kv-row"><span class="kv-key">Pattern</span><span class="kv-val">[ERROR], [WARN], or wildcard to match logs</span></div>
+        <div class="kv-row"><span class="kv-key">Filtering</span><span class="kv-val">Can filter before sending (reduce data)</span></div>
+        <div class="kv-row"><span class="kv-key">Latency</span><span class="kv-val">~5-60 seconds (batched by Firehose)</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title purple">Firehose Delivery Configuration</div>
+        <div class="kv-row"><span class="kv-key">Buffer Size</span><span class="kv-val">128 MB or buffer time window (60-900s)</span></div>
+        <div class="kv-row"><span class="kv-key">Format</span><span class="kv-val">Raw JSON; optional Lambda transformation</span></div>
+        <div class="kv-row"><span class="kv-key">Destination</span><span class="kv-val">S3, Redshift, Splunk, or HTTP endpoint</span></div>
+        <div class="kv-row"><span class="kv-key">Retry</span><span class="kv-val">Automatic retry on failure; backoff policy</span></div>
+        <div class="kv-row"><span class="kv-key">Cost</span><span class="kv-val">~$0.035 per GB ingested</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Cross-Account Firehose Setup</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Step 1 (Central Account B):</strong> Create S3 bucket for logs. Create IAM role that Firehose will assume (permissions: S3 write, KMS decrypt if encrypted).</p>
+        <p><strong>Step 2 (Central Account B):</strong> Create Firehose delivery stream targeting S3 bucket. Grant role permission to write.</p>
+        <p><strong>Step 3 (Account A):</strong> Create IAM role for CloudWatch Logs subscription. Grant permission to invoke Kinesis Firehose in Account B (cross-account).</p>
+        <p><strong>Step 4 (Account A):</strong> Create subscription filter on log group; specify Firehose ARN in Account B. Use IAM role created in Step 3.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Account</th>
+            <th>Responsible For</th>
+            <th>Permissions Needed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CloudWatch Logs (source)</strong></td>
+            <td>A</td>
+            <td>Publish logs to Firehose</td>
+            <td>firehose:PutRecord on Firehose ARN (Account B)</td>
+          </tr>
+          <tr>
+            <td><strong>Firehose (aggregator)</strong></td>
+            <td>B (central)</td>
+            <td>Buffer and batch logs</td>
+            <td>s3:PutObject on S3 bucket + KMS if encrypted</td>
+          </tr>
+          <tr>
+            <td><strong>S3 Bucket (storage)</strong></td>
+            <td>B (central)</td>
+            <td>Store centralized logs</td>
+            <td>Firehose role must have write permission</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-label">Best Practice: Firehose vs CloudWatch Logs Insights</span>
+      <p><strong>CloudWatch Logs Insights:</strong> For ad-hoc querying/searching; stores in CloudWatch (expensive for long-term). <strong>Firehose → S3:</strong> For archival and bulk analysis; cheaper long-term storage (~0.023/GB in S3 vs. 0.50/GB in CloudWatch). <strong>Recommended:</strong> Use both: CloudWatch Logs Insights for real-time queries; Firehose to S3 for cost-effective archival.</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>CloudWatch Logs Subscription filters CANNOT send directly to S3.</strong> Must use Kinesis (Streams or Firehose) or Lambda as intermediary. | <strong>Cross-account Firehose requires explicit IAM trust.</strong> Don't forget Account B's Firehose role must trust Account A's CloudWatch Logs service. | <strong>Firehose batching = latency.</strong> If real-time is critical, reduce buffer size (but increases API calls/cost).</p>
+    </div>
+  </div>
+
+  <!-- 13: Aurora Slow Query Logs -->
+  <div class="section" id="aurora-logs">
+    <div class="section-header">
+      <span class="section-num">13</span>
+      <span class="section-title">Aurora MySQL: Slow Query & Error Logs to CloudWatch</span>
+      <span class="section-tag tag-database">Database Logging & Monitoring</span>
+    </div>
+    <div class="prose">
+      <p>Aurora automatically publishes logs to CloudWatch if enabled. Understanding log types, parameter groups, and CloudWatch integration is essential for troubleshooting and compliance.</p>
+    </div>
+
+    <div class="compare-grid col3" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Slow Query Log</div>
+        <div class="kv-row"><span class="kv-key">Captures</span><span class="kv-val">Queries exceeding long_query_time (default: 10s)</span></div>
+        <div class="kv-row"><span class="kv-key">Parameter</span><span class="kv-val"><code>slow_query_log=1</code>, <code>long_query_time=2</code></span></div>
+        <div class="kv-row"><span class="kv-key">CloudWatch</span><span class="kv-val">/aws/rds/instance/my-cluster/slowquery</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Identify performance bottlenecks; optimize queries</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title green">Error Log</div>
+        <div class="kv-row"><span class="kv-key">Captures</span><span class="kv-val">Warnings, errors, deprecations (all severity levels)</span></div>
+        <div class="kv-row"><span class="kv-key">Parameter</span><span class="kv-val">Automatic; no configuration needed</span></div>
+        <div class="kv-row"><span class="kv-key">CloudWatch</span><span class="kv-val">/aws/rds/instance/my-cluster/error</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Detect DB startup issues, connection failures, crashes</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title purple">Audit Log</div>
+        <div class="kv-row"><span class="kv-key">Captures</span><span class="kv-val">Connection/disconnection, queries (if enabled)</span></div>
+        <div class="kv-row"><span class="kv-key">Parameter</span><span class="kv-val"><code>server_audit_logging=1</code> (Premium feature)</span></div>
+        <div class="kv-row"><span class="kv-key">CloudWatch</span><span class="kv-val">/aws/rds/instance/my-cluster/audit</span></div>
+        <div class="kv-row"><span class="kv-key">Use Case</span><span class="kv-val">Compliance; track who ran what query</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Enable Slow Query Logs - Step by Step</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Step 1:</strong> Create or modify DB Cluster Parameter Group. Set <code>slow_query_log=1</code>. Set <code>long_query_time=2</code> (threshold in seconds).</p>
+        <p><strong>Step 2:</strong> Apply parameter group to Aurora cluster. Requires cluster restart (< 1min downtime).</p>
+        <p><strong>Step 3:</strong> Enable "Publish to CloudWatch Logs" option in Aurora cluster. Select log types: error, general, slowquery, audit.</p>
+        <p><strong>Step 4:</strong> Create IAM role for RDS to write to CloudWatch Logs. Trust policy allows <code>rds.amazonaws.com</code>. Attach <code>AmazonRDSCloudwatchLogsRolePolicy</code>.</p>
+        <p><strong>Step 5:</strong> Monitor logs in CloudWatch Log Group. Query using CloudWatch Insights for performance analysis.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title green">CloudWatch Insights Query Examples</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Top 10 slowest queries:</strong> <code>fields @timestamp, @duration | stats avg(@duration) as avg_ms by @message | sort avg_ms desc</code></p>
+        <p><strong>Count errors by severity:</strong> <code>fields severity | stats count() by severity</code></p>
+        <p><strong>Connection failures in last hour:</strong> <code>fields @message | filter @message like /refused/ or @message like /timeout/</code></p>
+      </div>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-label">Best Practice</span>
+      <p>Enable slow query logging with <code>long_query_time=2-5</code> for production (captures actionable slow queries, not every query). Pair with CloudWatch alarms that trigger on slow query count > threshold. Use Insights for root cause analysis.</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>Slow query logs require parameter group change + cluster restart.</strong> Can't enable them on-the-fly without downtime. | <strong>Error logs are automatic (no config).</strong> Don't need parameter changes for error log visibility. | <strong>CloudWatch Logs incurs cost.</strong> Long log retention (e.g., 1 year) = expensive. Consider archiving to S3 via Firehose.</p>
+    </div>
+  </div>
+
+  <!-- 14: EC2 CloudWatch Logs Agent -->
+  <div class="section" id="ec2-cwlogs">
+    <div class="section-header">
+      <span class="section-num">14</span>
+      <span class="section-title">Install & Configure CloudWatch Logs Agent on EC2</span>
+      <span class="section-tag tag-logging">Instance Observability</span>
+    </div>
+    <div class="prose">
+      <p>CloudWatch Logs Agent (Unified CloudWatch Agent) captures application and system logs from EC2 instances. Understanding installation, configuration, and IAM requirements is essential for production logging.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">CloudWatch Logs Agent (Legacy) vs Unified Agent</div>
+        <div class="kv-row"><span class="kv-key">Logs Agent</span><span class="kv-val">Deprecated; forwards logs only</span></div>
+        <div class="kv-row"><span class="kv-key">Unified Agent</span><span class="kv-val">Current; logs + metrics + traces</span></div>
+        <div class="kv-row"><span class="kv-key">Recommendation</span><span class="kv-val">Use Unified Agent for all new deployments</span></div>
+        <div class="kv-row"><span class="kv-key">Installation</span><span class="kv-val">Download from S3; install via package manager</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title green">Installation Steps</div>
+        <div class="kv-row"><span class="kv-key">Step 1</span><span class="kv-val">Attach IAM role to EC2 with CloudWatchLogsAgentServerPolicy</span></div>
+        <div class="kv-row"><span class="kv-key">Step 2</span><span class="kv-val">Download agent: <code>wget https://s3.amazonaws.com/.../AmazonCloudWatchAgent.zip</code></span></div>
+        <div class="kv-row"><span class="kv-key">Step 3</span><span class="kv-val">Install: <code>sudo ./install.sh</code></span></div>
+        <div class="kv-row"><span class="kv-key">Step 4</span><span class="kv-val">Create config file (JSON); specify log files to monitor</span></div>
+        <div class="kv-row"><span class="kv-key">Step 5</span><span class="kv-val">Start agent: <code>sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Configuration File (JSON) Example</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Simple config monitoring /var/log/app.log:</strong></p>
+        <p><code style="display: block; background: var(--bg3); padding: 8px; margin: 8px 0; font-size: 11px; border-radius: 2px; overflow-x: auto;">{
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/app.log",
+            "log_group_name": "/aws/ec2/my-app",
+            "log_stream_name": "{instance_id}"
+          }
+        ]
+      }
+    }
+  }
+}</code></p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Command / Setup</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Check agent status</strong></td>
+            <td><code>sudo systemctl status amazon-cloudwatch-agent</code></td>
+            <td>Verify running; check logs if failed</td>
+          </tr>
+          <tr>
+            <td><strong>Verify logs in CloudWatch</strong></td>
+            <td>CloudWatch Logs console → Log Groups</td>
+            <td>Logs appear within 5-10 seconds of agent sending</td>
+          </tr>
+          <tr>
+            <td><strong>Troubleshoot agent</strong></td>
+            <td><code>tail -f /opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log</code></td>
+            <td>Check for errors (permissions, file not found, network)</td>
+          </tr>
+          <tr>
+            <td><strong>Restart agent</strong></td>
+            <td><code>sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a restart -m ec2</code></td>
+            <td>Apply config changes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-label">Best Practice</span>
+      <p>Use IAM role + Unified CloudWatch Agent on all EC2 instances. Store config in Parameter Store or Secrets Manager for easy updates. Tag log groups for cost allocation. Set retention policies to avoid excessive CloudWatch costs.</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>IAM role MUST include CloudWatchLogsAgentServerPolicy.</strong> Without it, agent can't write logs (permission denied). | <strong>Agent must be installed and STARTED.</strong> Downloaded but not running = no logs sent. | <strong>Config file is JSON, not YAML.</strong> Make sure formatting is correct or agent fails silently.</p>
+    </div>
+  </div>
+
+  <!-- 15: X-Ray SDK Setup -->
+  <div class="section" id="xray-setup">
+    <div class="section-header">
+      <span class="section-num">15</span>
+      <span class="section-title">X-Ray SDK: Trace HTTP Requests & SQL Queries on EC2</span>
+      <span class="section-tag tag-tracing">Distributed Tracing & Observability</span>
+    </div>
+    <div class="prose">
+      <p>AWS X-Ray SDK instruments applications to capture requests, traces, and subsegments (e.g., database queries). Understanding SDK setup, patching, and SQL tracing is critical for production diagnostics.</p>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title blue">X-Ray SDK Setup for Java EC2 Application</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Step 1: Add X-Ray SDK dependency</strong> (Maven): <code>&lt;dependency&gt;&lt;groupId&gt;com.amazonaws&lt;/groupId&gt;&lt;artifactId&gt;aws-xray-recorder-sdk-core&lt;/artifactId&gt;&lt;/dependency&gt;</code></p>
+        <p><strong>Step 2: Patch HTTP client</strong> (Spring Boot example):</p>
+        <p><code style="display: block; background: var(--bg3); padding: 8px; margin: 8px 0; font-size: 11px; border-radius: 2px;">import com.amazonaws.xray.AWSXRay;
+import com.amazonaws.xray.AWSXRayRecorderBuilder;
+import com.amazonaws.xray.plugins.ECSPlugin;
+import com.amazonaws.xray.strategy.sampling.LocalizedSamplingStrategy;
+
+AWSXRayRecorderBuilder builder = AWSXRayRecorderBuilder.standard()
+    .withPlugin(new ECSPlugin());
+URL ruleFile = Resources.getResource("sampling-rules.json");
+builder.withSamplingStrategy(new LocalizedSamplingStrategy(ruleFile));
+AWSXRay.setGlobalRecorder(builder.build());</code></p>
+        <p><strong>Step 3: Configure X-Ray daemon</strong>: X-Ray daemon runs on EC2 (via port 2000 UDP) or local VPC. Agent sends traces.</p>
+        <p><strong>Step 4: Add IAM permissions</strong>: EC2 role needs <code>xray:PutTraceSegments</code> and <code>xray:PutTelemetryRecords</code>.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title green">Tracing HTTP Requests</div>
+        <div class="kv-row"><span class="kv-key">SDK Feature</span><span class="kv-val">Automatic patching of HTTP clients (Apache HttpClient, URLConnection)</span></div>
+        <div class="kv-row"><span class="kv-key">Captured Data</span><span class="kv-val">Request method, URL, status code, latency, error details</span></div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">X-Ray SDK automatically wraps HTTP calls; no code changes if using standard clients</span></div>
+        <div class="kv-row"><span class="kv-key">Visibility</span><span class="kv-val">X-Ray console shows service map + request traces + latencies</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title purple">Tracing SQL Queries</div>
+        <div class="kv-row"><span class="kv-key">SDK Feature</span><span class="kv-val">Patching of JDBC drivers (MySQL, PostgreSQL, etc.)</span></div>
+        <div class="kv-row"><span class="kv-key">Captured Data</span><span class="kv-val">SQL query, result count, database host, latency</span></div>
+        <div class="kv-row"><span class="kv-key">Dependency</span><span class="kv-val"><code>aws-xray-recorder-sdk-sql</code> for JDBC patching</span></div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">SDK auto-wraps JDBC connection; add <code>com.amazonaws.xray.sql.mysql.Driver</code> to connection string</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">X-Ray Concept: Segments vs Subsegments</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Segment:</strong> Root trace of a request (e.g., incoming HTTP request to EC2). Contains metadata: host, user, request/response.</p>
+        <p><strong>Subsegment:</strong> Child of segment; represents downstream call (e.g., to database, external API, Lambda). Nested hierarchy shows dependency chain.</p>
+        <p><strong>Example:</strong> User hits API → Segment (incoming request). Within segment: 1) SQL query subsegment (200ms to RDS). 2) External API call subsegment (150ms to third-party). 3) Cache read subsegment (10ms to ElastiCache). X-Ray traces the full path and identifies bottlenecks.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Role</th>
+            <th>Configuration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>X-Ray Daemon (service)</strong></td>
+            <td>Collects trace segments from EC2; forwards to X-Ray service</td>
+            <td>Runs on EC2 or in VPC (port 2000 UDP); IAM role on EC2 needs permission</td>
+          </tr>
+          <tr>
+            <td><strong>X-Ray SDK (library)</strong></td>
+            <td>Instruments application; creates segments/subsegments</td>
+            <td>Added as Maven/Gradle dependency; initialized in app startup</td>
+          </tr>
+          <tr>
+            <td><strong>IAM Role (EC2)</strong></td>
+            <td>Grants EC2 permission to send traces</td>
+            <td>Permissions: <code>xray:PutTraceSegments</code>, <code>xray:PutTelemetryRecords</code></td>
+          </tr>
+          <tr>
+            <td><strong>X-Ray Console</strong></td>
+            <td>Visualizes traces; shows service map & latency</td>
+            <td>Query traces; filter by service, latency, error</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout success">
+      <span class="callout-label">Best Practice for SQL Tracing</span>
+      <p>1) Install X-Ray SDK with SQL support. 2) Use JDBC URL format: <code>jdbc:xray:mysql://db.amazonaws.com:3306/mydb</code> (wraps JDBC driver). 3) Queries are captured as subsegments within HTTP trace. 4) Use X-Ray console to identify slow DB queries across all instances. 5) Combine with Aurora slow query logs for detailed SQL analysis.</p>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>X-Ray daemon must be running on EC2 (or in VPC).</strong> SDK alone doesn't send traces; daemon must exist. | <strong>IAM role is required.</strong> SDK can't send traces without <code>xray:PutTraceSegments</code> permission. | <strong>SQL tracing requires <code>aws-xray-recorder-sdk-sql</code> dependency.</strong> Core SDK doesn't trace JDBC by default. | <strong>Sampling rules control trace volume.</strong> Default may not be aggressive enough for high-traffic apps (adjust to reduce cost).</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text3); text-align: center; padding: 8px 0 40px;">
+    // AWS SAP-C02 Practice Exam — Complete Study Guide (15/15 Topics) // Master all weak areas and ace the exam!
+  </div>
+
+</div>
+</body>
+</html>

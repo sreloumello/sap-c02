@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS SAP-C02 Caching & Database — Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e13;
+    --bg2: #111722;
+    --bg3: #1a2233;
+    --border: #1e2d44;
+    --border2: #2a3f5f;
+    --text: #c8d8ec;
+    --text2: #7a9bbf;
+    --text3: #4a6a8a;
+    --accent: #00c8ff;
+    --accent2: #0077bb;
+    --green: #00e5a0;
+    --amber: #ffb830;
+    --red: #ff4d6a;
+    --purple: #9d7fff;
+    --teal: #00d4c8;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Scanline texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,200,255,0.012) 2px,
+      rgba(0,200,255,0.012) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  .shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* Header */
+  header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .header-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid var(--accent2);
+    padding: 3px 10px;
+    border-radius: 2px;
+    background: rgba(0,200,255,0.05);
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+
+  header h1 {
+    font-family: var(--font-mono);
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  header h1 span { color: var(--accent); }
+
+  .header-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-align: right;
+    line-height: 2;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    padding: 20px 24px;
+    margin-bottom: 48px;
+    border-radius: 2px;
+  }
+
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 4px 24px;
+  }
+
+  .toc a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text2);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    transition: color 0.15s;
+  }
+
+  .toc a:hover { color: var(--accent); }
+  .toc a::before { content: '→'; color: var(--text3); font-size: 10px; }
+
+  /* Section */
+  .section {
+    margin-bottom: 56px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(1)  { animation-delay: 0.05s; }
+  .section:nth-child(2)  { animation-delay: 0.10s; }
+  .section:nth-child(3)  { animation-delay: 0.15s; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text3);
+    min-width: 28px;
+  }
+
+  .section-title {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+    border: 1px solid;
+  }
+
+  .tag-cache   { color: var(--teal); border-color: var(--teal); background: rgba(0,212,200,0.08); }
+  .tag-cdn     { color: var(--green); border-color: var(--green); background: rgba(0,229,160,0.08); }
+  .tag-db      { color: var(--purple); border-color: var(--purple); background: rgba(157,127,255,0.08); }
+  .tag-routing { color: var(--amber); border-color: var(--amber); background: rgba(255,184,48,0.08); }
+  .tag-access  { color: var(--accent); border-color: var(--accent); background: rgba(0,200,255,0.08); }
+
+  /* Prose */
+  .prose { color: var(--text); line-height: 1.75; }
+  .prose p { margin-bottom: 14px; }
+  .prose strong { color: #fff; font-weight: 600; }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    padding: 1px 6px;
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  /* Callout / trap box */
+  .callout {
+    border-left: 3px solid var(--amber);
+    background: rgba(255,184,48,0.05);
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .callout.danger { border-color: var(--red); background: rgba(255,77,106,0.05); }
+  .callout.info   { border-color: var(--accent); background: rgba(0,200,255,0.05); }
+  .callout.success { border-color: var(--green); background: rgba(0,229,160,0.05); }
+
+  .callout-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .callout.danger .callout-label  { color: var(--red); }
+  .callout.info .callout-label    { color: var(--accent); }
+  .callout.success .callout-label { color: var(--green); }
+
+  .callout p { margin: 0; font-size: 13px; }
+
+  /* Comparison grid */
+  .compare-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .compare-grid.col2 { grid-template-columns: repeat(2, 1fr); }
+  .compare-grid.col3 { grid-template-columns: repeat(3, 1fr); }
+  .compare-grid.col4 { grid-template-columns: repeat(4, 1fr); }
+
+  @media (max-width: 720px) {
+    .compare-grid.col2,
+    .compare-grid.col3,
+    .compare-grid.col4 { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 16px;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border2); }
+
+  .card-title {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-title.blue   { color: var(--accent); }
+  .card-title.green  { color: var(--green); }
+  .card-title.amber  { color: var(--amber); }
+  .card-title.red    { color: var(--red); }
+  .card-title.purple { color: var(--purple); }
+  .card-title.teal   { color: var(--teal); }
+
+  .kv-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 7px;
+    font-size: 12px;
+    align-items: baseline;
+  }
+
+  .kv-key {
+    font-family: var(--font-mono);
+    color: var(--text3);
+    min-width: 80px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .kv-val { color: var(--text); flex: 1; }
+
+  /* Table */
+  .tbl-wrap {
+    overflow-x: auto;
+    margin: 16px 0;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    background: var(--bg3);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border2);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  td strong { color: #fff; font-weight: 600; }
+  td code {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--bg3);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  /* Pill list */
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+  }
+
+  .pill {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 2px;
+    border: 1px solid var(--border2);
+    color: var(--text2);
+    background: var(--bg3);
+  }
+
+  .pill.accent  { border-color: var(--accent2); color: var(--accent); background: rgba(0,200,255,0.06); }
+  .pill.green   { border-color: rgba(0,229,160,0.4); color: var(--green); background: rgba(0,229,160,0.06); }
+  .pill.amber   { border-color: rgba(255,184,48,0.4); color: var(--amber); background: rgba(255,184,48,0.06); }
+  .pill.red     { border-color: rgba(255,77,106,0.4); color: var(--red); background: rgba(255,77,106,0.06); }
+  .pill.purple  { border-color: rgba(157,127,255,0.4); color: var(--purple); background: rgba(157,127,255,0.06); }
+  .pill.teal    { border-color: rgba(0,212,200,0.4); color: var(--teal); background: rgba(0,212,200,0.06); }
+
+  /* Rule divider */
+  .rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* Blink cursor for header */
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.1em;
+    background: var(--accent);
+    margin-left: 4px;
+    vertical-align: middle;
+    animation: blink 1s step-start infinite;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header>
+    <div>
+      <div class="header-badge">AWS Solutions Architect Professional</div>
+      <h1>Caching &amp; Database<span> Advanced Topics</span><span class="cursor"></span></h1>
+    </div>
+    <div class="header-meta">
+      3 advanced topics<br>
+      Production patterns<br>
+      Exam-critical knowledge
+    </div>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">// Contents</div>
+    <div class="toc-grid">
+      <a href="#cloudfront-ssl">CloudFront, ALB &amp; SSL Caching</a>
+      <a href="#rds-healthcheck">RDS Health Checks &amp; Route 53</a>
+      <a href="#sns-access">SNS Access Policies vs IAM Roles</a>
+    </div>
+  </div>
+
+  <!-- ───────── CLOUDFRONT & SSL ───────── -->
+  <div class="section" id="cloudfront-ssl">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">CloudFront, ALB &amp; SSL: Cache Hit Ratio vs Security</span>
+      <span class="section-tag tag-cache">CDN Caching Strategy</span>
+    </div>
+    <div class="prose">
+      <p>When the same SSL certificate is deployed on both CloudFront and ALB, caching decisions must balance security requirements with high cache hit ratios. The key consideration: <strong>whether to include the Host header in cache key</strong> and how it impacts cache behavior.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">The Problem: SSL + High Cache Ratio</div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">CloudFront (HTTPS) → ALB (HTTPS) with same certificate</span></div>
+        <div class="kv-row"><span class="kv-key">Cache Key</span><span class="kv-val">By default includes Host header (domain name)</span></div>
+        <div class="kv-row"><span class="kv-key">Issue</span><span class="kv-val">Different Host values → cache miss even for identical content</span></div>
+        <div class="kv-row"><span class="kv-key">Example</span><span class="kv-val"><code>api-dc1.example.com</code> vs <code>api-dc2.example.com</code> cache separately</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">Solution: Exclude Host from Cache Key</div>
+        <div class="kv-row"><span class="kv-key">Approach</span><span class="kv-val">Configure CloudFront to NOT include Host in cache key</span></div>
+        <div class="kv-row"><span class="kv-key">Benefit</span><span class="kv-val">Same content cached regardless of Host header value</span></div>
+        <div class="kv-row"><span class="kv-key">Result</span><span class="kv-val">Much higher cache hit ratio (60%+ possible vs 20-30%)</span></div>
+        <div class="kv-row"><span class="kv-key">Requirement</span><span class="kv-val">Must forward Host header to origin (ALB/backend)</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Why Forward the Host Header?</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Host header is essential for virtual hosting.</strong> ALB uses Host header to route requests to correct target group or backend service (e.g., different microservices on same ALB). If Host is not forwarded, ALB loses the information about which domain was requested.</p>
+        <p><strong>Example:</strong> ALB routes <code>api.example.com</code> → service-A and <code>static.example.com</code> → service-B. Without Host header forwarded from CloudFront, both requests arrive as the CloudFront origin name, and ALB cannot differentiate them.</p>
+        <p><strong>SSL certificate multiple SANs:</strong> If the certificate has multiple SANs (e.g., <code>api.example.com, static.example.com, www.example.com</code>), CloudFront can use the same certificate for all domains. ALB must see the original Host to apply correct routing rules.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Configuration</th>
+            <th>Host in Cache Key</th>
+            <th>Host Forwarded</th>
+            <th>Cache Hit Ratio</th>
+            <th>Backend Routing</th>
+            <th>Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Default (restrictive)</strong></td>
+            <td>✓ Included</td>
+            <td>✓ Yes</td>
+            <td>Low 20-30%</td>
+            <td>Works correctly</td>
+            <td>High security; exact host isolation required</td>
+          </tr>
+          <tr>
+            <td><strong>Recommended (optimized)</strong></td>
+            <td>✗ Excluded</td>
+            <td>✓ Yes (custom origin)</td>
+            <td>High 60-70%</td>
+            <td>Works correctly</td>
+            <td>Multi-domain CDN behind ALB with virtual hosting</td>
+          </tr>
+          <tr>
+            <td><strong>Risky (no forwarding)</strong></td>
+            <td>✗ Excluded</td>
+            <td>✗ No</td>
+            <td>High 60-70%</td>
+            <td>Breaks; ALB cannot route</td>
+            <td>Not recommended; causes routing failures</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title green">CloudFront Cache Behavior Configuration</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Cache Key Settings (CloudFront):</strong></p>
+        <p>1. Under "Origin request policy" or legacy "Whitelist headers," do NOT include <code>Host</code>.</p>
+        <p>2. Set "Origin custom header" to forward the original Host: Create a custom origin-request header like <code>X-Original-Host: $host</code> if needed (though CloudFront's default behavior is to auto-forward Host to origin).</p>
+        <p>3. Cache policy: Select Standard cached headers or create custom; ensure Host is NOT part of cache key. Use cache query string selectively (exclude if not needed for differentiation).</p>
+        <p><strong>ALB side:</strong> ALB receives the Host header automatically in each request from CloudFront. Use Host header rules to route to correct target groups.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid col2" style="margin-top: 16px;">
+      <div class="callout info">
+        <span class="callout-label">CloudFront Cache Policies</span>
+        <p><strong>Managed Policy "CachingOptimized":</strong> Excludes Host from cache key; includes Path, Query String. High hit ratio for APIs/content CDN. <strong>Managed Policy "CachingDisabled":</strong> No caching; every request hits origin.</p>
+      </div>
+      <div class="callout success">
+        <span class="callout-label">Best Practice</span>
+        <p>1. Use CloudFront distribution with custom origin (ALB). 2. Set cache policy to exclude Host header. 3. Verify ALB routing rules use Host header for virtual hosting. 4. Monitor cache hit ratio (CloudWatch metric <code>CacheHitRate</code>). 5. Test failover scenarios (e.g., origin down) to ensure failover cache works.</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>DO NOT forward Host = routing breaks.</strong> ALB must receive Host header to apply host-based routing rules. | Excluding Host from cache key is safe if all domains map to same origin and backend. If different domains need different responses (content negotiation), include Host in cache key. | Certificate SAN count matters: wildcard or multi-SAN certificate required for multiple domains on single CloudFront distribution.</p>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title purple">SSL Certificate Strategy</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Shared Certificate on CloudFront + ALB:</strong> Use wildcard (e.g., <code>*.example.com</code>) or multi-SAN (e.g., <code>api.example.com, static.example.com, www.example.com</code>). CloudFront terminates HTTPS for clients; re-establishes HTTPS to ALB using same certificate (or different cert on ALB — doesn't matter for cache logic). Security level: TLS 1.2+ for both directions.</p>
+        <p><strong>Certificate pinning edge case:</strong> If clients pin the certificate, ensure certificate is consistent across both CloudFront and ALB endpoints. Pinning violations will cause client failures.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── RDS HEALTH CHECK ───────── -->
+  <div class="section" id="rds-healthcheck">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">RDS Health Checks &amp; Route 53: CloudWatch Integration</span>
+      <span class="section-tag tag-db">Database Monitoring &amp; Routing</span>
+    </div>
+    <div class="prose">
+      <p>Route 53 health checks can monitor RDS database availability, typically via CloudWatch metrics or direct TCP/HTTP probes. Understanding the different health check methods and CloudWatch-based monitoring is critical for multi-region failover and SLA maintenance.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">Route 53 Health Check Types</div>
+        <div class="kv-row"><span class="kv-key">TCP</span><span class="kv-val">TCP connection to port (e.g., 3306 for MySQL). Simple, fast; doesn't authenticate.</span></div>
+        <div class="kv-row"><span class="kv-key">HTTP/HTTPS</span><span class="kv-val">HTTP request to custom endpoint (not RDS directly; need wrapper app).</span></div>
+        <div class="kv-row"><span class="kv-key">CloudWatch Alarm</span><span class="kv-val">Route 53 checks status of CloudWatch alarm; alarm monitors RDS metrics.</span></div>
+        <div class="kv-row"><span class="kv-key">SNS Notification</span><span class="kv-val">Route 53 receives SNS message (less common; typically for computed health).</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">Recommended: CloudWatch Alarm Method</div>
+        <div class="kv-row"><span class="kv-key">Setup</span><span class="kv-val">Create CloudWatch alarm on RDS metric (CPU, connections, replication lag)</span></div>
+        <div class="kv-row"><span class="kv-key">Alarm State</span><span class="kv-val">ALARM = unhealthy, OK = healthy</span></div>
+        <div class="kv-row"><span class="kv-key">Route 53</span><span class="kv-val">Health check type "CloudWatch Alarm"</span></div>
+        <div class="kv-row"><span class="kv-key">Scope</span><span class="kv-val">Multi-region failover (health check in secondary region checks primary's alarm)</span></div>
+        <div class="kv-row"><span class="kv-key">Detail</span><span class="kv-val">Detects logical DB health (not just TCP)</span></div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Health Check Method</th>
+            <th>Checks What</th>
+            <th>Latency</th>
+            <th>Supports Multi-Region</th>
+            <th>Best For</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>TCP to RDS Endpoint</strong></td>
+            <td>TCP port open (port 3306, 5432, etc.)</td>
+            <td>~1s</td>
+            <td>Limited; same-region only</td>
+            <td>Quick single-region check; RDS in same AZ</td>
+          </tr>
+          <tr>
+            <td><strong>CloudWatch CPU Metric Alarm</strong></td>
+            <td>RDS CPU % exceeds threshold; can indicate issues</td>
+            <td>~60s (alarm eval period)</td>
+            <td>✓ Yes (in any region)</td>
+            <td>Detect CPU exhaustion, query storms before DB fails</td>
+          </tr>
+          <tr>
+            <td><strong>CloudWatch DB Connections Alarm</strong></td>
+            <td>Active connections exceed max pool</td>
+            <td>~60s</td>
+            <td>✓ Yes (in any region)</td>
+            <td>Detect connection pool exhaustion (common app issue)</td>
+          </tr>
+          <tr>
+            <td><strong>CloudWatch Replica Lag Alarm</strong></td>
+            <td>RDS read replica lag exceeds threshold (sec)</td>
+            <td>~60s</td>
+            <td>✓ Yes (multi-region read replicas)</td>
+            <td>Detect replication failures; avoid stale reads</td>
+          </tr>
+          <tr>
+            <td><strong>HTTP Wrapper App on EC2</strong></td>
+            <td>Custom logic (e.g., test query); returns HTTP 200 or error</td>
+            <td>~2-5s</td>
+            <td>✓ Yes (wrapper can query any RDS)</td>
+            <td>Most flexible; application-level health validation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">CloudWatch-Based RDS Health Monitoring</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Step 1: Create CloudWatch Alarm on RDS Metric</strong></p>
+        <p>Example: "RDS CPU > 90% for 1 minute" → Alarm state ALARM. Metric: <code>CPUUtilization</code> (RDS sends automatically every minute). Threshold: 90%, Evaluation: 1 datapoint out of 1, Treat missing: as notOkay.</p>
+        <p><strong>Step 2: Attach SNS Topic (optional but recommended)</strong></p>
+        <p>SNS topic notifies Ops when alarm triggers. Simultaneously, Route 53 health check subscribes to same alarm state.</p>
+        <p><strong>Step 3: Route 53 Health Check</strong></p>
+        <p>Type: "CloudWatch Alarm". Alarm Name: select above alarm. Health Checker Region: secondary region (or any region to avoid single point of failure). Min Health Checkers: 1+.</p>
+        <p><strong>Result:</strong> If DB CPU spikes → CloudWatch alarm → ALARM state → Route 53 marks endpoint unhealthy → DNS records point to failover target.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid col2" style="margin-top: 16px;">
+      <div class="callout info">
+        <span class="callout-label">Direct RDS Health Check: TCP Method</span>
+        <p>Route 53 attempts TCP connection to RDS endpoint:port. Failure = health check FAIL. Fastest (~1s), but only detects network/port availability — misses logical errors (auth failures, max connections). Not recommended for production; use CloudWatch Alarm instead.</p>
+      </div>
+      <div class="callout success">
+        <span class="callout-label">Advanced: Application-Level Health Check</span>
+        <p>Deploy lightweight HTTP endpoint on EC2 (or Lambda behind ALB). Endpoint: 1) Connects to RDS. 2) Executes simple query (SELECT 1). 3) Returns HTTP 200 if OK, 500 if fail. Route 53 health check → HTTP endpoint. Most accurate; detects auth, connection pool, query execution issues.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title green">CloudWatch Metrics for RDS Health</div>
+      <div class="compare-grid col2" style="margin-top: 12px; gap: 12px;">
+        <div style="background: var(--bg); border: 1px solid var(--border2); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-bottom: 6px;">Performance & Load</div>
+          <p style="font-size: 12px; color: var(--text2);"><code>CPUUtilization</code>, <code>DatabaseConnections</code>, <code>DiskQueueDepth</code>. Alarm on CPU > 85% or Connections > 90% of max_connections.</p>
+        </div>
+        <div style="background: var(--bg); border: 1px solid var(--border2); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--green); margin-bottom: 6px;">Replication Health</div>
+          <p style="font-size: 12px; color: var(--text2);"><code>ReplicaLag</code> (seconds behind). Alarm if > 5s. Critical for read replica failover; stale lag = stale reads.</p>
+        </div>
+        <div style="background: var(--bg); border: 1px solid var(--border2); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--purple); margin-bottom: 6px;">Storage & I/O</div>
+          <p style="font-size: 12px; color: var(--text2);"><code>FreeableMemory</code>, <code>FreeStorageSpace</code>, <code>ReadIOPS</code>, <code>WriteIOPS</code>. Alarm on FreeStorageSpace < 10% (risk of auto-scaling filling disk).</p>
+        </div>
+        <div style="background: var(--bg); border: 1px solid var(--border2); padding: 12px; border-radius: 2px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--amber); margin-bottom: 6px;">Failover Health</div>
+          <p style="font-size: 12px; color: var(--text2);"><code>DBInstanceNetworkReceiveThroughput</code>, <code>NetworkTransmitThroughput</code>. Sudden drop = network issue or failover in progress.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>CloudWatch Alarm to Create</th>
+            <th>Route 53 Action</th>
+            <th>Outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Primary RDS CPU spike</strong></td>
+            <td>CPUUtilization > 90%</td>
+            <td>Health check fails → DNS updates</td>
+            <td>Clients routed to read replica or standby</td>
+          </tr>
+          <tr>
+            <td><strong>Replication lag too high</strong></td>
+            <td>ReplicaLag > 5 seconds</td>
+            <td>Health check fails → read replica marked unhealthy</td>
+            <td>Read traffic not sent to stale replica</td>
+          </tr>
+          <tr>
+            <td><strong>Connection pool exhausted</strong></td>
+            <td>DatabaseConnections > 99% of max</td>
+            <td>Health check fails → connection pooling service switched</td>
+            <td>RDS Proxy or secondary endpoint used</td>
+          </tr>
+          <tr>
+            <td><strong>Storage full (Auto-scaling off)</strong></td>
+            <td>FreeStorageSpace < 5%</td>
+            <td>Health check fails; manual intervention</td>
+            <td>Alerts ops to delete old logs/data or resize</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>CloudWatch alarms have latency (~60s evaluation cycle).</strong> For immediate failover, use TCP health check (faster) in addition to CloudWatch alarm. | <strong>Route 53 health checks from secondary region</strong> avoid false positives if the primary region's Route 53 service is affected. | RDS does NOT have built-in Route 53 integration; you must manually create health checks. Use RDS events (SNS) separately from Route 53 health checks for dual monitoring.</p>
+    </div>
+  </div>
+
+  <!-- ───────── SNS ACCESS POLICIES ───────── -->
+  <div class="section" id="sns-access">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">SNS Access Policies vs Cross-Account IAM Roles</span>
+      <span class="section-tag tag-access">Identity &amp; Access Management</span>
+    </div>
+    <div class="prose">
+      <p>Cross-account SNS access requires careful design: SNS Resource-Based Policies vs cross-account IAM roles. Understanding the differences, use cases, and security implications is essential for secure multi-account architectures.</p>
+    </div>
+
+    <div class="compare-grid col2" style="margin: 16px 0;">
+      <div class="card">
+        <div class="card-title blue">SNS Resource-Based Access Policy</div>
+        <div class="kv-row"><span class="kv-key">Location</span><span class="kv-val">Attached to SNS topic itself</span></div>
+        <div class="kv-row"><span class="kv-key">Format</span><span class="kv-val">JSON policy with Principal (account ID, role ARN)</span></div>
+        <div class="kv-row"><span class="kv-key">Scope</span><span class="kv-val">Grants permission to external accounts/users directly</span></div>
+        <div class="kv-row"><span class="kv-key">Action Control</span><span class="kv-val">Specify SNS actions: Publish, Subscribe, Delete, etc.</span></div>
+        <div class="kv-row"><span class="kv-key">Condition</span><span class="kv-val">Can include IP restriction, encryption, source VPC</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title teal">Cross-Account IAM Role Method</div>
+        <div class="kv-row"><span class="kv-key">Architecture</span><span class="kv-val">Assume cross-account IAM role from source account</span></div>
+        <div class="kv-row"><span class="kv-key">Trust Relationship</span><span class="kv-val">Role's trust policy allows source account to assume</span></div>
+        <div class="kv-row"><span class="kv-key">Permissions</span><span class="kv-val">Role policy grants SNS actions; evaluated during assume</span></div>
+        <div class="kv-row"><span class="kv-key">Session Token</span><span class="kv-val">STS provides temporary credentials; session has UUID</span></div>
+        <div class="kv-row"><span class="kv-key">Audit Trail</span><span class="kv-val">CloudTrail logs assume-role event + SNS action separately</span></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title amber">Comparison: When to Use Each</div>
+      <div class="tbl-wrap" style="margin-top: 8px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Aspect</th>
+              <th>SNS Resource Policy</th>
+              <th>Cross-Account Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Setup Complexity</strong></td>
+              <td>Simple; one policy on topic</td>
+              <td>Moderate; role + trust policy in both accounts</td>
+            </tr>
+            <tr>
+              <td><strong>Audit & Compliance</strong></td>
+              <td>Less granular; single policy</td>
+              <td>Better; separate CloudTrail events for assume + action</td>
+            </tr>
+            <tr>
+              <td><strong>Revocation Speed</strong></td>
+              <td>Immediate (update topic policy)</td>
+              <td>Immediate (update role trust or permissions)</td>
+            </tr>
+            <tr>
+              <td><strong>MFA Support</strong></td>
+              <td>No; policies don't support MFA condition</td>
+              <td>Yes; can require MFA in assume-role trust policy</td>
+            </tr>
+            <tr>
+              <td><strong>Temporary Credentials</strong></td>
+              <td>Not used; direct access</td>
+              <td>Yes; STS session tokens with TTL (1-12hrs)</td>
+            </tr>
+            <tr>
+              <td><strong>Price</strong></td>
+              <td>No additional cost</td>
+              <td>No additional cost (STS assume is free)</td>
+            </tr>
+            <tr>
+              <td><strong>Multi-Account Governance</strong></td>
+              <td>Scattered across topics; hard to audit</td>
+              <td>Centralized in IAM role definitions</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title green">SNS Resource-Based Policy Example</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Use Case:</strong> Account A has SNS topic. Account B application needs to publish messages.</p>
+        <p><strong>Policy (on topic in Account A):</strong></p>
+        <p><code style="display: block; background: var(--bg3); padding: 8px; margin: 8px 0; border-radius: 2px;">{
+  "Effect": "Allow",
+  "Principal": {"AWS": "arn:aws:iam::ACCOUNT-B:root"},
+  "Action": "sns:Publish",
+  "Resource": "arn:aws:sns:us-east-1:ACCOUNT-A:my-topic"
+}</code></p>
+        <p><strong>From Account B:</strong> AWS credential in Account B calls <code>aws sns publish --topic-arn arn:aws:sns:us-east-1:ACCOUNT-A:my-topic ...</code> Succeeds if that credential is allowed under Account B's IAM (typically any authenticated principal in the account). No assume-role needed.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title purple">Cross-Account Role Example</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Use Case:</strong> Account A has SNS topic. Account B needs restricted access via assumed role.</p>
+        <p><strong>In Account A: Create role "SNSPublisherRole"</strong></p>
+        <p><strong>Trust Policy:</strong></p>
+        <p><code style="display: block; background: var(--bg3); padding: 8px; margin: 8px 0; border-radius: 2px;">{
+  "Effect": "Allow",
+  "Principal": {"AWS": "arn:aws:iam::ACCOUNT-B:root"},
+  "Action": "sts:AssumeRole",
+  "Condition": {"StringEquals": {"sts:ExternalId": "unique-secret-123"}}
+}</code></p>
+        <p><strong>Permissions Policy (on role):</strong> Allows <code>sns:Publish</code> on topic ARN.</p>
+        <p><strong>From Account B:</strong> <code>aws sts assume-role --role-arn arn:aws:iam::ACCOUNT-A:role/SNSPublisherRole --external-id unique-secret-123 --role-session-name app-session</code> → Get temp credentials (access key + secret key + session token). Use credentials to publish. MFA can be required in trust policy for extra security.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Recommended Approach</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Third-party SaaS accessing SNS</strong></td>
+            <td>SNS Resource Policy (wide grant)</td>
+            <td>External account; simple one-way access; no shared infrastructure</td>
+          </tr>
+          <tr>
+            <td><strong>Internal cross-account within organization</strong></td>
+            <td>Cross-account role (better audit)</td>
+            <td>Centralized governance; CloudTrail shows assume + usage; can enforce MFA</td>
+          </tr>
+          <tr>
+            <td><strong>Lambda in Account B publishing to Account A SNS</strong></td>
+            <td>Cross-account role (Lambda assumes role)</td>
+            <td>Lambda fits role-assume pattern; temporary creds rotated by AWS</td>
+          </tr>
+          <tr>
+            <td><strong>Temporary contractor access</strong></td>
+            <td>Cross-account role with expiration + MFA</td>
+            <td>Temporary permissions; MFA adds layer; audit trail clear</td>
+          </tr>
+          <tr>
+            <td><strong>Anonymous public subscribe (read-only)</strong></td>
+            <td>SNS Resource Policy with wildcard Principal</td>
+            <td>Public SNS topic; minimal access; resource policy is standard</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="compare-grid col2" style="margin-top: 16px;">
+      <div class="callout info">
+        <span class="callout-label">CloudTrail Audit Differences</span>
+        <p><strong>Resource Policy:</strong> Single CloudTrail event: <code>sns:Publish</code> called by principal in Account B. Principal = Account B IAM identity used directly. <strong>Cross-Account Role:</strong> Two events: 1) <code>sts:AssumeRole</code> (Account B caller), 2) <code>sns:Publish</code> (role session). Better traceability.</p>
+      </div>
+      <div class="callout success">
+        <span class="callout-label">Best Practice: Defense in Depth</span>
+        <p>Combine both: 1) Cross-account role with trust policy (controls who can access). 2) SNS resource policy on topic (least-privilege, restricts which actions). 3) CloudWatch logged to S3 via CloudTrail. 4) SNS topic encryption with shared KMS key (Account A key shared with Account B role). 5) SNS dead-letter queue for failed messages.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title red">Security Pitfalls</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p><strong>Resource Policy with `"Principal": "*"`:</strong> Allows any AWS account (or even unauthenticated callers if combined with public access) to publish. Never use unless intentionally public (e.g., webhook SNS topic). Always add conditions (IP, encryption required, specific account ID).</p>
+        <p><strong>No External ID in cross-account role:</strong> Attacker in Account B could guess role name and assume if only Account B is trusted. External ID acts as a secret password; always include it.</p>
+        <p><strong>Over-permissive policy with `"Action": "sns:*"`:</strong> Allows Delete, SetTopicAttributes, etc. Restrict to minimum needed (e.g., only <code>sns:Publish</code> and <code>sns:Subscribe</code>).</p>
+      </div>
+    </div>
+
+    <div class="callout danger">
+      <span class="callout-label">⚡ Exam Trap</span>
+      <p><strong>Resource Policy = direct access; no temporary creds.</strong> If you need immediate revocation, rely on IAM role trust policy (faster to update than topic policy). | <strong>Cross-account role requires sts:AssumeRole call first.</strong> Ensures two-step: 1) Who is calling (source account principal), 2) What can they do (role permissions). | SNS does NOT support resource-based Principal type "Service" for services outside the same account (e.g., can't grant S3 in Account B direct access to SNS in Account A). Must use role.</p>
+    </div>
+
+    <div class="card" style="margin: 16px 0;">
+      <div class="card-title teal">KMS Encryption Integration (Multi-Account)</div>
+      <div class="prose" style="margin-top: 8px; font-size: 13px;">
+        <p>If SNS topic is encrypted with KMS key in Account A, Account B role must also have permission to <code>kms:Decrypt</code> and <code>kms:Publish</code> on the key. Key policy must be updated to allow the cross-account role ARN. This adds complexity; often, use a shared Key policy that allows both accounts to use the key.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+  <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text3); text-align: center; padding: 8px 0 40px;">
+    // AWS Caching &amp; Database Advanced Topics — 3 topics covered // Study well
+  </div>
+
+</div>
+</body>
+</html>
